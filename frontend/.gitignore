@@ -1,0 +1,4 @@
+#Push to Vercel
+node_modules
+build
+dist

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "cd frontend && npm install serve -g && npm i",
+    "start": "cd backend && npm run start:prod",
+    "frontend": "cd frontend && npm run build && serve -s build -p 8080"
+  },
+  "dependencies": {
+    "@nestjs/cli": "^7.6.0"
+  }
+}

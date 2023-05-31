@@ -1,0 +1,14 @@
+﻿Market_or_Asset,Specificity,CB_Listed,Regulatory_Req,Facts_Data,Opinions,Risk_Mitigation_Trade_Recommendations,General_Advice_RG244,Personal_Advice_RG244
+Macro-economy,Market-wide,N/A,N/A,Yes,No,No,N/A,No
+Crypto-economy,Market-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Currency (SoV) Sector,Sector-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Smart Contract Platform Sector,Sector-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Defi Sector,Sector-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Computing Sector,Sector-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Culture & Entertainment Sector,Sector-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Digitisation Sector,Sector-wide,N/A,N/A,Yes,Yes,Yes,N/A,No
+Bitcoin,Specific Asset(s),Yes,N/A,Yes,Yes,Yes,N/A,No
+Ethereum,Specific Asset(s),Yes,N/A,Yes,Yes,Yes,N/A,No
+All Other Assets,Specific Asset(s),Yes,N/A,Yes,Yes,No,N/A,No
+Unlisted Crypto Assets,Specific Asset(s),No,May be AFSL Risk,Yes,No,No,N/A,No
+C&B Fund,Specific Asset(s),Yes,RG146 + NCC AFSL,Yes,Yes,Yes,Yes,No
