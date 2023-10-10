@@ -14,8 +14,8 @@ const Explorers = () => {
       <Col className="explorers-heading-container">
         <Row style={{ fontSize: "1px" }}>
           {EXPLORERS.map((explorer) => (
-            <Col style={{ margin: "10px 20px" }} key={explorer.name}>
-              <Col style={{ fontWeight: "bold" }}>
+            <Col style={{ margin: "10px 10px" }} key={explorer.name}>
+              <Col style={{ fontWeight: "bold"}}>
                 <Button
                   onClick={() => openInNewTab(explorer.url)}
                   shape="round"

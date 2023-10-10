@@ -25,7 +25,7 @@ export class AdviceController {
     type: [adviceCSV],
     description: 'research matrix',
   })
-  @ApiTags('research')
+  @ApiTags('Research')
   create() {
     return this.researchService.uploadCSV();
   }
@@ -38,7 +38,7 @@ export class AdviceController {
     type: [adviceCSV],
     description: 'research matrix',
   })
-  @ApiTags('research')
+  @ApiTags('Research')
   readAll() {
     return this.researchService.readAll();
   }

@@ -1,91 +1,30 @@
+// Define the NomicsCryptoDataDto interface
 export class NomicsCryptoDataDto {
   id: string;
-  currency: string;
   symbol: string;
   name: string;
-  logo_url: string;
-  status: string;
-  price: string;
-  price_date: string;
-  price_timestamp: string;
-  circulating_supply: string;
-  max_supply: string;
-  market_cap: string;
-  market_cap_dominance: string;
-  num_exchanges: string;
-  num_pairs: string;
-  num_pairs_unmapped: string;
-  first_candle: string;
-  first_trade: string;
-  first_order_book: string;
-  rank: string;
-  rank_delta: string;
-  high: string;
-  high_timestamp: string;
-  '1h': oneHourDto;
-  '1d': oneHourDto;
-  '7d': oneHourDto;
-  '30d': oneHourDto;
-  '365d': oneHourDto;
-  'ytd': oneHourDto;
-}
+  image: string; 
+  current_price: number;
+  total_volume: number;
+  market_cap: number;
+  market_cap_rank: number;
+  max_supply: number;
+  circulating_supply: number;
+  ath: number;
+  ath_date: string;
+  ath_change_percentage: number;
+  atl: number;
+  atl_date: string;
+  atl_change_percentage: number;
+  price_change_24h: number;
+  price_change_percentage_24h: number;
+  price_change_percentage_1h_in_currency: number;
+  price_change_percentage_7d_in_currency: number;
+  price_change_percentage_14d_in_currency: number;
+  price_change_percentage_30d_in_currency: number;
+  price_change_percentage_1y_in_currency: number;
+  market_cap_change_24h: number;
+  market_cap_change_percentage_24h: number;
+  last_updated: string;
+};
 
-export class oneHourDto {
-  market_cap_change: string;
-  market_cap_change_pct: string;
-  price_change: string;
-  price_change_pct: string;
-  volume: string;
-  volume_change: string;
-  volume_change_pct: string;
-}
-
-export class oneDayDto {
-  market_cap_change: string;
-  market_cap_change_pct: string;
-  price_change: string;
-  price_change_pct: string;
-  volume: string;
-  volume_change: string;
-  volume_change_pct: string;
-}
-
-export class SevenDayDto {
-  market_cap_change: string;
-  market_cap_change_pct: string;
-  price_change: string;
-  price_change_pct: string;
-  volume: string;
-  volume_change: string;
-  volume_change_pct: string;
-}
-
-export class ThirtyDayDto {
-  market_cap_change: string;
-  market_cap_change_pct: string;
-  price_change: string;
-  price_change_pct: string;
-  volume: string;
-  volume_change: string;
-  volume_change_pct: string;
-}
-
-export class oneYearDto {
-  market_cap_change: string;
-  market_cap_change_pct: string;
-  price_change: string;
-  price_change_pct: string;
-  volume: string;
-  volume_change: string;
-  volume_change_pct: string;
-}
-
-export class YeartoDateDto {
-  market_cap_change: string;
-  market_cap_change_pct: string;
-  price_change: string;
-  price_change_pct: string;
-  volume: string;
-  volume_change: string;
-  volume_change_pct: string;
-}

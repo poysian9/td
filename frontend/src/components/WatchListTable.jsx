@@ -1,11 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Button, Table, Typography } from "antd";
+import { Col, Table, Typography} from "antd";
 import Loader from "./Loader";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { useReducer } from "react";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
+import Explorers from "./Explorers";
+import CryptoMCap from "./CryptoMCap";
+import BreadCrumbs from "./BreadCrumbs";
+const { Title } = Typography;
 
 const WatchListTable = () => {
   const [watchAssets, setwatchAssets] = useState("");
@@ -36,8 +39,6 @@ const WatchListTable = () => {
     (watchlists) => watchlists.coindata?.[0]?.watchlist === "TRUE"
   );
 
-  console.log(watchlist);
-
   const columns = [
     {
       title: "Coin",
@@ -51,7 +52,7 @@ const WatchListTable = () => {
             height={28}
             width={28}
           />{" "}
-          {text} ({record.symbol}){" "}
+          {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),
       width: 300,
@@ -78,19 +79,19 @@ const WatchListTable = () => {
       ),
     },
     {
-      title: "7d",
-      dataIndex: ["sevenday", "price_change_pct"],
+      title: "7d % Change",
+      dataIndex: "price_change_percentage_7d",
       key: "percentchange7d",
       render(text) {
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -107,37 +108,20 @@ const WatchListTable = () => {
       },
       width: 101,
       sorter: (a, b) => {
-        if (
-          a &&
-          a["sevenday"] &&
-          a["sevenday"].price_change_pct &&
-          b &&
-          b["sevenday"] &&
-          b["sevenday"].price_change_pct
-        ) {
-          return (
-            a["sevenday"].price_change_pct - b["sevenday"].price_change_pct
-          );
-        } else if (a && a["sevenday"] && a["sevenday"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["sevenday"] && b["sevenday"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
+        const priceChangeA = a?.price_change_percentage_7d ?? 0;
+        const priceChangeB = b?.price_change_percentage_7d ?? 0;
 
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
+        // Use the nullish coalescing operator to handle undefined/null values
+        return priceChangeA === priceChangeB ? 0 : priceChangeA < priceChangeB ? -1 : 1;
       },
     },
-
     {
       title: "Status",
       dataIndex: "coindata",
       key: "b",
       width: 67,
       align: "center",
-      render: (text) => <p>{text[0].statuses}</p>,
+      render: (text) => <p>{text[0]?.statuses.replace(/_/g, ' ')}</p>,
     },
     {
       title: "Primary Sector",
@@ -157,41 +141,37 @@ const WatchListTable = () => {
     },
     {
       title: "Coingecko Link",
-      dataIndex: "coingeckolink",
+      dataIndex: "coindata",
       key: "e",
       width: 67,
-      render: (text) => <a href={text}>Coingecko</a>,
+      render: (text) => <a href={text}>{text[0].coingeckolink}</a>,
     },
-    {
-      title: "Favorite",
-      dataIndex: "favorite",
-      key: "f",
-      width: 67,
-      align: "center",
-      render: (text, record) => (
-        <Button
-          onClick={() => handleClick(record.nomicsid, text)}
-          type="primary"
-          shape="circle"
-          icon={favorite ? <StarOutlined /> : <StarFilled />}
-        />
-      ),
-    },
+    // {
+    //   title: "Favorite",
+    //   dataIndex: "favorite",
+    //   key: "f",
+    //   width: 67,
+    //   align: "center",
+    //   render: (text, record) => (
+    //     <Button
+    //       onClick={() => handleClick(record.nomicsid, text)}
+    //       type="primary"
+    //       shape="circle"
+    //       icon={favorite ? <StarOutlined /> : <StarFilled />}
+    //     />
+    //   ),
+    // },
   ];
 
-  return (
-    <>
-      {error ? (
-        <Typography>Something went wrong</Typography>
-      ) : (
-        <Table
-          pagination={{ defaultPageSize: 10 }}
-          columns={columns}
-          dataSource={watchlist}
-        />
-      )}
-    </>
-  );
+  return watchlist ? (
+    <Table
+      pagination={{ defaultPageSize: 100 }}
+      columns={columns}
+      dataSource={watchlist}
+    />
+    ) : (
+    ""
+    );
 };
 
 export default WatchListTable;

@@ -14,6 +14,9 @@ export default class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     // You can also log the error to an error reporting service
     console.error("Uncaught Error: ", error, errorInfo);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   }
 
   render() {

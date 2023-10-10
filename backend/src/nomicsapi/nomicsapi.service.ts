@@ -1,78 +1,50 @@
 import { HttpService } from '@nestjs/axios';
-import { Dependencies, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { response } from 'express';
-import { map } from 'rxjs';
-
-const today = new Date().toISOString();
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-const sevendays = new Date();
-sevendays.setDate(sevendays.getDate() - 7);
-const thirty = new Date();
-thirty.setDate(thirty.getDate() - 30);
-const yearly = new Date();
-yearly.setDate(yearly.getDate() - 365);
-
-const threeyears = new Date();
-threeyears.setDate(threeyears.getDate() - 365 * 3);
+import { Observable, map, tap } from 'rxjs';
+import { GlobalDataDto } from './dto/globalData.dto';
+import { 
+  GlobalData,
+  GlobalDataDocument, 
+} from './schema/globalData.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class NomicsapiService {
-  private NOMICS_API_KEY: string;
+  private CG_API_KEY: string;
 
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
+
+    @InjectModel(GlobalData.name)
+    private globalModel: Model<GlobalDataDocument>,
   ) {
-    this.NOMICS_API_KEY = this.configService.get<string>('NOMICS_API_KEY');
+    this.CG_API_KEY = this.configService.get<string>('CG_API_KEY');
   }
 
   getmaxHistory({ coinid }) {
     return this.httpService
       .get(
-        `https://api.nomics.com/v1/markets/candles?key=${this.NOMICS_API_KEY}&base=${coinid}&quote=USD&interval=1d&start=&end=${today}`,
+        `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=max&interval=daily`,
       )
       .pipe(map((response) => response.data));
   }
+
   get1yHistory({ coinid }) {
     return this.httpService
       .get(
-        `https://api.nomics.com/v1/markets/candles?key=${
-          this.NOMICS_API_KEY
-        }&base=${coinid}&quote=USD&interval=1d&start=${yearly.toISOString()}&end=${today}`,
+        `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=365&interval=daily`,
       )
       .pipe(map((response) => response.data));
   }
 
-  get3yHistory({ coinid }) {
-    const threeyears2 = new Date();
-    threeyears2.setDate(threeyears2.getDate() - 365 * 3 + 2);
-
+  get1mHistory({ coinid }) {
     return this.httpService
       .get(
-        `https://api.nomics.com/v1/markets/candles?key=${
-          this.NOMICS_API_KEY
-        }&base=${coinid}&quote=USD&interval=1d&start=${threeyears.toISOString()}&end=${today}`,
-      )
-      .pipe(
-        map((response) =>
-          response.data[0].timestamp < threeyears2.toISOString()
-            ? ((response.data[response.data.length - 1].close -
-                response.data[0].close) /
-                response.data[0].close) *
-              100
-            : 'undefined',
-        ),
-      );
-  }
-
-  get30dHistory({ coinid }) {
-    return this.httpService
-      .get(
-        `https://api.nomics.com/v1/markets/candles?key=${
-          this.NOMICS_API_KEY
-        }&base=${coinid}&quote=USD&interval=1h&start=${thirty.toISOString()}&end=${today}`,
+        `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=30`,
       )
       .pipe(map((response) => response.data));
   }
@@ -80,31 +52,47 @@ export class NomicsapiService {
   get7dHistory({ coinid }) {
     return this.httpService
       .get(
-        `https://api.nomics.com/v1/markets/candles?key=${
-          this.NOMICS_API_KEY
-        }&base=${coinid}&quote=USD&interval=1h&start=${sevendays.toISOString()}&end=${today}`,
+        `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=7`,
       )
       .pipe(map((response) => response.data));
   }
-  get24hHistory({ coinid }) {
+
+  get1dHistory({ coinid }) {
     return this.httpService
       .get(
-        `https://api.nomics.com/v1/markets/candles?key=${
-          this.NOMICS_API_KEY
-        }&base=${coinid}&quote=USD&interval=5m&start=${yesterday.toISOString()}&end=${today}`,
+        `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=1`,
       )
       .pipe(map((response) => response.data));
   }
-  getWebsites(coinid: string) {
-    return this.httpService
-      .get(
-        `https://api.nomics.com/v1/currencies?key=${this.NOMICS_API_KEY}&ids=${coinid}&attributes=id,name,block_explorer_url,twitter_url,medium_url,website_url,telegram_url,whitepaper_url`,
-      )
-      .pipe(map((response) => response.data));
+
+  formatGlobal(rows: GlobalDataDto): GlobalData {
+    const formatted = {
+      total_market_cap: rows.data.total_market_cap.usd,
+      market_cap_percentage: rows.data.market_cap_percentage.btc,
+      market_cap_change_pct: rows.data.market_cap_change_percentage_24h_usd,
+    };
+    return formatted;
   }
-  getGlobal() {
+  @Cron(CronExpression.EVERY_10_MINUTES)
+  getGlobal(): Observable<GlobalData> {
     return this.httpService
-      .get(`https://api.nomics.com/v1/global-ticker?key=${this.NOMICS_API_KEY}`)
-      .pipe(map((response) => response.data));
+      .get(`https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=${this.CG_API_KEY}`)
+      .pipe(
+        map((response) => this.formatGlobal(response.data)),
+        tap((globalObject) => this.upsert(globalObject))
+      );
   }
+
+  async upsert(body: GlobalData) {
+      return await this.globalModel.findOneAndUpdate(
+        {},
+        body,
+        { upsert: true, new: true },
+      );
+  }  
+
+  async readGlobal() {
+    return await this.globalModel.findOne({}).lean().exec();
+  }
+
 }

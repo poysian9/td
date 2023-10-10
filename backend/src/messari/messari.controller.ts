@@ -1,32 +1,26 @@
 import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MessariService } from './messari.service';
-import { MessariSchema } from './schema/messari.schema';
+import { Messari } from './schema/messari.schema';
 
 @Controller('messari')
 export class MessariController {
-  constructor(private readonly messariService: MessariService) {}
+  constructor(private readonly messariService: MessariService,
+    ) {}
 
-  @Get('allmessaridata')
-  @ApiOperation({
-    description: 'Get Messari data of all assets to database',
-  })
+  @Post('updatemessaridata')
   @ApiResponse({
-    type: [MessariSchema],
+    type: [Messari],
     description: 'Messari data of all assets to database',
   })
   @ApiTags('Messari')
-  async postMessariData() {
-    const messariResult = await this.messariService.readAll();
-    return this.messariService.postMessariData(messariResult);
+  async updateMessariData() {
+    return await this.messariService.updateMessariData();
   }
 
-  @Get('api/v2/assets')
-  @ApiOperation({
-    description: 'Get a list of all assets and their metrics and profiles',
-  })
+  @Get('assets')
   @ApiResponse({
-    type: [MessariSchema],
+    type: [Messari],
     description: 'List of all assets and their metrics and profiles',
   })
   @ApiTags('Messari')
@@ -34,16 +28,13 @@ export class MessariController {
     return await this.messariService.readAll();
   }
 
-  @Get('api/v2/assets/:symbol/profile')
-  @ApiOperation({
-    description: 'Get profile for an asset.',
-  })
+  @Get('assets/:id')
   @ApiResponse({
-    type: [MessariSchema],
+    type: Messari,
     description: 'Asset profile',
   })
   @ApiTags('Messari')
-  async readAsset(@Param('symbol') symbol: string) {
-    return await this.messariService.readAsset(symbol);
+  async readAsset(@Param('id') id: string) {
+    return await this.messariService.readAsset(id);
   }
 }

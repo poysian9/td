@@ -10,18 +10,18 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Typography } from "antd";
+import prettyNum, { PRECISION_SETTING } from "pretty-num";
 
-const LineChart = ({ coinHistory, currentPrice, coinName, changeData }) => {
-  const coinPrice = [];
-  const coinTimestamp = [];
-
-  for (let i = 0; i < coinHistory.length; i += 1) {
-    coinPrice.push(coinHistory[i].close);
+const LineChart = ({ coinHistory, currentPrice, changeData }) => {
+  // Check if coinHistory is defined and has a 'prices' property
+  if (!coinHistory || !coinHistory.prices) {
+    return null; // Return null or handle this case as needed
   }
 
-  for (let i = 0; i < coinHistory.length; i += 1) {
-    coinTimestamp.push(new Date(coinHistory[i].timestamp).toLocaleDateString());
-  }
+  const coinPrice = coinHistory.prices.map((priceData) => priceData[1]);
+  const coinTimestamp = coinHistory.prices.map((priceData) =>
+    new Date(priceData[0]).toLocaleDateString()
+  );
 
   const data = {
     labels: coinTimestamp,
@@ -63,23 +63,8 @@ const LineChart = ({ coinHistory, currentPrice, coinName, changeData }) => {
     Legend
   );
 
-  // const lastElement = coinHistory !== undefined ? coinHistory.length : "";
-  // const priceChange =
-  //   coinHistory !== undefined
-  //     ? ((coinHistory[lastElement - 1].close - coinHistory[0].open) /
-  //         coinHistory[0].open) *
-  //       100
-  //     : "";
-  // console.log(coinHistory);
-
-  return coinHistory !== undefined ? (
+  return coinHistory ? (
     <>
-      <Typography.Title level={5} className="price-change">
-        {changeData}
-      </Typography.Title>
-      <Typography.Title level={5} className="current-price">
-        Current Price: $ {currentPrice}
-      </Typography.Title>
       <Line data={data} options={options} />
     </>
   ) : (

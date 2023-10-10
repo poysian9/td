@@ -3,20 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 import { Model } from 'mongoose';
 import * as path from 'path';
-
+import { adviceDto } from './dto/advice.dto';
 import { adviceCSVDocument, adviceCSV } from './schema/advice.schema';
-
-interface adviceCSVRow {
-  Market_or_Asset: string;
-  Specificity: string;
-  CB_Listed: string;
-  Regulatory_Req: string;
-  Facts_Data: string;
-  Opinions: string;
-  Risk_Mitigation_Trade_Recommendations: string;
-  General_Advice_RG244: string;
-  Personal_Advice_RG244: string;
-}
 
 @Injectable()
 export class AdviceService {
@@ -41,7 +29,7 @@ export class AdviceService {
     return processed;
   }
 
-  formatCSV(rows: adviceCSVRow[]) {
+  formatCSV(rows: adviceDto[]) {
     return rows.map((x) => {
       return {
         Market_or_Asset: x.Market_or_Asset,
@@ -59,8 +47,8 @@ export class AdviceService {
   }
 
   async uploadCSV() {
-    const rows: adviceCSVRow[] = this.readCSV(
-      '/Users/jlow/Development/Asset-Database/backend/src/advice/ResearchMatrix.csv',
+    const rows: adviceDto[] = this.readCSV(
+      '/Users/ren/developed/trader-asset-database/backend/src/advice/ResearchMatrix.csv',
       [
         'Market_or_Asset',
         'Specificity',

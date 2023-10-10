@@ -3,28 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 import { Model } from 'mongoose';
 import * as path from 'path';
-import { CSVDto } from './dto/crypto-ids.dto';
+import { CSVDto } from './dto/csv.dto';
 import { CSVDocument, CSV } from './schema/csv.schema';
-
-interface CSVRow {
-  name: string;
-  ticker: string;
-  nomicsid: string;
-  coingeckoid: string;
-  statuses: string;
-  statusreasoning: string;
-  primarysector: string;
-  secondarysector: string;
-  factsdata: string;
-  opinions: string;
-  rmtr: string;
-  format: string;
-  coingeckolink: string;
-  assetdescription: string;
-  tokendescription: string;
-  watchlist: string;
-  messari: string;
-}
 
 @Injectable()
 export class CsvService {
@@ -49,7 +29,7 @@ export class CsvService {
     return processed;
   }
 
-  formatCSV(rows: CSVRow[]) {
+  formatCSV(rows: CSVDto[]): CSV[] {
     return rows.map((x) => {
       return {
         name: x.name,
@@ -60,21 +40,21 @@ export class CsvService {
         statusreasoning: x.statusreasoning,
         primarysector: x.primarysector,
         secondarysector: x.secondarysector,
-        factsdata: x.factsdata,
+        factsdata: x.facts_data,
         opinions: x.opinions,
-        rmtr: x.rmtr,
+        rmtr: x.rm_tr,
         format: x.format,
         coingeckolink: x.coingeckolink,
         assetdescription: x.assetdescription,
         tokendescription: x.tokendescription,
         watchlist: x.watchlist,
-        messari: x.messari,
+        messari: x.messarilink,
       };
     });
   }
 
   async uploadCSV() {
-    const rows: CSVRow[] = this.readCSV('./src/csv/DatabaseCSV.csv', [
+    const rows: CSVDto[] = this.readCSV('./src/csv/DatabaseCSV.csv', [
       'name',
       'ticker',
       'nomicsid',
@@ -83,15 +63,15 @@ export class CsvService {
       'statusreasoning',
       'primarysector',
       'secondarysector',
-      'factsdata',
+      'facts_data',
       'opinions',
-      'rmtr',
+      'rm_tr',
       'format',
       'coingeckolink',
       'assetdescription',
       'tokendescription',
       'watchlist',
-      'messari',
+      'messarilink',
     ]);
 
     const formatted: CSV[] = this.formatCSV(rows);
@@ -101,7 +81,7 @@ export class CsvService {
   }
 
   async create(docs: CSV[]) {
-    return await this.cryptoModel.insertMany(docs);
+    return await this.cryptoModel.create(docs);
   }
 
   async upsert(docs: CSV[]) {
@@ -127,15 +107,8 @@ export class CsvService {
     return await this.cryptoModel.findOne({ name }).lean().exec();
   }
 
-  async readNomicsid(nomicsid: string) {
-    return await this.cryptoModel.findOne({ nomicsid }).lean().exec();
-  }
   async readCoingeckoid(coingeckoid: string) {
     return await this.cryptoModel.findOne({ coingeckoid }).lean().exec();
-  }
-
-  async readallCoingeckoid(coingeckoid: string) {
-    return await this.cryptoModel.find({ coingeckoid }).lean().exec();
   }
 
   async readTicker(ticker: string) {
@@ -150,16 +123,16 @@ export class CsvService {
     return await this.cryptoModel.find({ primarysector }).lean().exec();
   }
 
-  async readWatchlist(watchlist: string) {
-    return await this.cryptoModel.find({ watchlist }).lean().exec();
-  }
-
-  async update(watchlist: string, doc: CSVDto) {
+  async updateCoingeckoid(coingeckoid: string, updatedProperties: any ) {
+    const updateObject = {
+      $set: updatedProperties,
+    };
+  
     return await this.cryptoModel
-      .findOneAndUpdate({ watchlist }, doc, { new: true })
+      .findOneAndUpdate({ coingeckoid }, updateObject, { new: true })
       .lean()
       .exec();
-  }
+  };
 
   async delete(name: string) {
     return await this.cryptoModel.findOneAndDelete({ name }).lean().exec();
@@ -170,7 +143,7 @@ export class CsvService {
     const allStatus = allDocs.map((doc) => doc.statuses);
     const assetStatuses = [
       allStatus.filter((x) => x == 'Active').length,
-      allStatus.filter((x) => x == 'Sell Only').length,
+      allStatus.filter((x) => x == 'Sell_Only').length,
       allStatus.filter((x) => x == 'Delisted').length,
     ];
     return assetStatuses;

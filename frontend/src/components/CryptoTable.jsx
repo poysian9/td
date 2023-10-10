@@ -1,124 +1,80 @@
-import { Table, Button } from "antd";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Typography, Col, Input, Button, Table } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
-import React from "react";
 import defaultImg from "../images/samih_sui.png";
 import Loader from "./Loader";
-import { useGetCoinsQuery, useGetFiatCoinsQuery } from "../services/nomicsApi";
+import { useGetCoinsQuery } from "../services/nomicsApi";
 import { BreadCrumbs, CryptoMCap, Explorers } from "../components";
-import { SearchOutlined } from "@ant-design/icons";
-import { Col, Typography, Input, Select } from "antd";
+
+const { Title } = Typography;
 
 const CryptoTable = () => {
-  const { Option } = Select;
+  const [searchTerm, setSearchTerm] = useState("");
+  const { data: cryptosList } = useGetCoinsQuery(); // Use your API query
+  const [cryptos, setCryptos] = useState([]);
+  const [assets, setassets] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
-  const handleChange = (pagination, filters) => {
-    setFilteredInfo(filters);
-    console.log(filters);
+  const handleChange = (sorter, filters) => {
+    setFilteredInfo({
+      ...sorter,
+      ...filters,
+    });
   };
   const clearFilters = () => {
     setFilteredInfo({});
   };
-  const { Title } = Typography;
-  const { data, isFetching } = useGetCoinsQuery();
-  const cryptosList = data;
-  const [cryptos, setCryptos] = useState([]);
-  const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
-  const [assets, setassets] = useState("");
-
-  const fiats = ["AUD", "NZD", "CAD", "EUR", "GBP", "USD"];
-  const [currency, setCurrency] = useState("USD");
-
-  const { data: fiatData } = useGetFiatCoinsQuery(currency);
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_URL + `/csv`)
       .then((res) => res.json())
       .then((assets) => {
         setassets(assets);
-        // return data;
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [cryptosList]);
-
+  
   useEffect(() => {
-    if (currency === "USD") {
-      if (cryptosList) {
-        const filteredData = cryptosList.filter((coin) =>
-          assets.includes(coin.currency)
-        );
-        setCryptos(filteredData);
-      }
-    } else {
-      if (fiatData) {
-        const filteredData = fiatData.filter((coin) =>
-          assets.includes(coin.currency)
-        );
-        setCryptos(filteredData);
-      }
-    }
-  }, [cryptosList, fiatData]);
+    if (!cryptosList) return;
 
-  const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    if (currency === "USD") {
-      if (cryptosList) {
-        const filteredData = cryptosList.filter(
-          (coin) =>
-            coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setCryptos(filteredData);
-      }
-    } else {
-      if (fiatData) {
-        const filteredData = fiatData.filter(
-          (coin) =>
-            coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setCryptos(filteredData);
-      }
-    }
-  }, [cryptosList, searchTerm, fiatData]);
-
-  if (isFetching) return <Loader />;
+    // Filter based on your search term
+    const filteredData = cryptosList.filter(
+      (coin) =>
+        coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setCryptos(filteredData);
+  }, [cryptosList, searchTerm]);
 
   const mergeById = (a1, a2) =>
-    a1.map((itm) => ({
-      ...a2.find((item) => item.nomicsid === itm.currency && item),
-      ...itm,
-    }));
+  a1.map((itm) => ({
+    ...a2.find((item) => item.coingeckoid === itm.id && item),
+    ...itm,
+  }));
 
   const datalist = assets ? mergeById(cryptos, assets) : "";
+  if (loading) return <Loader />;
 
-  // console.log(datalist);
   const top = "topLeft";
   const bottom = "bottomRight";
-
+  
   const columns = [
     {
       title: "#",
       dataIndex: "rank",
       key: "Rank",
       width: 67,
-
-      render(text) {
-        return text !== undefined
-          ? {
-              children: <div>{text}</div>,
-            }
-          : {
-              children: <div>Null</div>,
-            };
-      },
+      render: (text) => (
+        <div>{text !== undefined ? text : "Null"}</div>
+      ),
       defaultSortOrder: "ascend",
-      sorter: (a, b) => a.rank - b.rank,
+      sorter: (a, b) => {
+         return a?.rank - b?.rank;
+      },
     },
-
     {
       title: "Coin",
       dataIndex: "name",
@@ -131,10 +87,10 @@ const CryptoTable = () => {
             height={28}
             width={28}
           />{" "}
-          {text} ({record.symbol}){" "}
+          {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),
-      width: 300,
+      width: 500,
     },
     {
       title: "Price",
@@ -159,18 +115,26 @@ const CryptoTable = () => {
     },
     {
       title: "1h",
-      dataIndex: ["onehour", "price_change_pct"],
+      dataIndex: "price_change_percentage_1h",
       key: "percentchange1h",
-      render(text) {
+      width: 101,
+      sorter: (c, d) => {
+        const priceChangeA = c?.price_change_percentage_1h ?? 0;
+        const priceChangeB = d?.price_change_percentage_1h ?? 0;
+
+        // Use the nullish coalescing operator to handle undefined/null values
+        return priceChangeA === priceChangeB ? 0 : priceChangeA < priceChangeB ? -1 : 1;
+      },
+      render: (text) =>{
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -182,46 +146,32 @@ const CryptoTable = () => {
               props: {
                 style: { color: "#000000" },
               },
-              children: <div>Null%</div>,
+              children: <div>-%</div>,
             };
-      },
-      width: 101,
-      sorter: (a, b) => {
-        if (
-          a &&
-          a["onehour"] &&
-          a["onehour"].price_change_pct &&
-          b &&
-          b["onehour"] &&
-          b["onehour"].price_change_pct
-        ) {
-          return a["onehour"].price_change_pct - b["onehour"].price_change_pct;
-        } else if (a && a["onehour"] && a["onehour"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["onehour"] && b["onehour"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
-
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
       },
     },
     {
       title: "24h",
-      dataIndex: ["oneday", "price_change_pct"],
+      dataIndex: "price_change_percentage_24h",
       key: "percentchange24h",
-      render(text) {
+      width: 101,
+      sorter: (a, b) => {
+        const priceChangeA = a?.price_change_percentage_24h ?? 0;
+        const priceChangeB = b?.price_change_percentage_24h ?? 0;
+
+        // Use the nullish coalescing operator to handle undefined/null values
+        return priceChangeA === priceChangeB ? 0 : priceChangeA < priceChangeB ? -1 : 1;
+      },
+      render: (text) =>{
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -233,46 +183,32 @@ const CryptoTable = () => {
               props: {
                 style: { color: "#000000" },
               },
-              children: <div>Null%</div>,
+              children: <div>-%</div>,
             };
-      },
-      width: 101,
-      sorter: (a, b) => {
-        if (
-          a &&
-          a["oneday"] &&
-          a["oneday"].price_change_pct &&
-          b &&
-          b["oneday"] &&
-          b["oneday"].price_change_pct
-        ) {
-          return a["oneday"].price_change_pct - b["oneday"].price_change_pct;
-        } else if (a && a["oneday"] && a["oneday"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["oneday"] && b["oneday"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
-
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
       },
     },
     {
       title: "7d",
-      dataIndex: ["sevenday", "price_change_pct"],
+      dataIndex: "price_change_percentage_7d",
       key: "percentchange7d",
-      render(text) {
+      width: 101,
+      sorter: (a, b) => {
+        const priceChangeA = a?.price_change_percentage_7d ?? 0;
+        const priceChangeB = b?.price_change_percentage_7d ?? 0;
+
+        // Use the nullish coalescing operator to handle undefined/null values
+        return priceChangeA === priceChangeB ? 0 : priceChangeA < priceChangeB ? -1 : 1;
+      },
+      render: (text) =>{
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -284,38 +220,15 @@ const CryptoTable = () => {
               props: {
                 style: { color: "#000000" },
               },
-              children: <div>Null%</div>,
+              children: <div>-%</div>,
             };
-      },
-      width: 101,
-      sorter: (a, b) => {
-        if (
-          a &&
-          a["sevenday"] &&
-          a["sevenday"].price_change_pct &&
-          b &&
-          b["sevenday"] &&
-          b["sevenday"].price_change_pct
-        ) {
-          return (
-            a["sevenday"].price_change_pct - b["sevenday"].price_change_pct
-          );
-        } else if (a && a["sevenday"] && a["sevenday"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["sevenday"] && b["sevenday"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
-
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
       },
     },
     {
       title: "Status",
       dataIndex: "statuses",
       key: "statuses",
+      width: 100,
       filters: [
         {
           text: "Active",
@@ -323,23 +236,29 @@ const CryptoTable = () => {
         },
         {
           text: "Sell Only",
-          value: "Sell Only",
+          value: "Sell_Only",
         },
         {
           text: "Delisted",
           value: "Delisted",
         },
       ],
-      width: 100,
       defaultFilteredValue: ["Active"],
-      filteredValue: filteredInfo.statuses || null,
-      filterMode: "tree",
-      onFilter: (value, record) => record.statuses.includes(value),
+      filteredValue: filteredInfo?.statuses || null, // Add optional chaining operator
+      filterMode: "multiple",
+      onFilter: (value, record) => record?.statuses === value,
+      render: (text) => {
+        // Replace underscores with spaces for rendering
+        const displayedText = text?.replace(/_/g, ' ');
+    
+        return displayedText;
+      },
     },
     {
       title: "Primary Sector",
       dataIndex: "primarysector",
       key: "primarysector",
+      width: 100,
       filters: [
         {
           text: "Computing",
@@ -370,15 +289,21 @@ const CryptoTable = () => {
           value: "null",
         },
       ],
-      width: 100,
-      filteredValue: filteredInfo.primarysector || null,
-      filterMode: "tree",
-      onFilter: (value, record) => record.primarysector.includes(value),
+      filteredValue: filteredInfo?.primarysector || null,
+      filterMode: "multiple",
+      onFilter: (value, record) => record?.primarysector === value,
+      render: (text) => {
+        // Replace underscores with spaces for rendering
+        const displayedText = text === "null" ? "-" : text; // Render "-" for "null" value
+    
+        return displayedText;
+      },
     },
     {
       title: "Secondary Sector",
       dataIndex: "secondarysector",
       key: "secondarysector",
+      width: 100,
       filters: [
         {
           text: "Active DAO",
@@ -525,22 +450,26 @@ const CryptoTable = () => {
           value: "null",
         },
       ],
-      width: 100,
-      filteredValue: filteredInfo.secondarysector || null,
-      filterMode: "tree",
-      onFilter: (value, record) => record.secondarysector.startsWith(value),
+      filteredValue: filteredInfo?.secondarysector || null,
+      filterMode: "multiple",
+      onFilter: (value, record) => record?.secondarysector === value,
+      render: (text) => {
+        // Replace underscores with spaces for rendering
+        const displayedText = text === "null" ? "-" : text; // Render "-" for "null" value
+    
+        return displayedText;
+      }
     },
-
     {
       title: "Market Cap",
       dataIndex: "market_cap",
       key: "market_cap",
-      render(text) {
+      render: (text) => {
         return text !== undefined
           ? {
               children: (
                 <div>
-                  {" "}
+                  {"$"}
                   {prettyNum(text, {
                     precision: 0,
                     thousandsSeparator: ",",
@@ -560,8 +489,8 @@ const CryptoTable = () => {
     },
     {
       title: "24h Volume",
-      dataIndex: ["oneday", "volume"],
-      key: "onedayvolume",
+      dataIndex: "volume_24h",
+      key: "onedayvolume2",
       render: (text) => (
         <>
           $
@@ -573,26 +502,9 @@ const CryptoTable = () => {
         </>
       ),
       width: 160,
-      sorter: (a, b) => {
-        if (
-          a &&
-          a["oneday"] &&
-          a["oneday"].volume &&
-          b &&
-          b["oneday"] &&
-          b["oneday"].volume
-        ) {
-          return a["oneday"].volume - b["oneday"].volume;
-        } else if (a && a["oneday"] && a["oneday"].volume) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["oneday"] && b["oneday"].volume) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
-
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
+      sorter: {
+        compare: (a, b) => a.volume_24h - b.volume_24h,
+        multiple: 2, // Allow multiple columns to be sorted simultaneously
       },
     },
   ];
@@ -629,7 +541,7 @@ const CryptoTable = () => {
           </Button>
         </div>
         <div>
-          <Select //Set up a select box that will be used to change time period of the chart
+          {/* <Select //Set up a select box that will be used to change time period of the chart
             defaultValue="USD"
             className="select-currency"
             placeholder="Select Currency"
@@ -638,7 +550,7 @@ const CryptoTable = () => {
             {fiats.map((fiat) => (
               <Option key={fiat}>{fiat}</Option>
             ))}
-          </Select>
+          </Select> */}
         </div>
       </div>
       <Table
@@ -647,8 +559,9 @@ const CryptoTable = () => {
         dataSource={datalist}
         onChange={handleChange}
         scroll={{
-          x: 1300,
+          x: 600,
         }}
+        size={"small"}      
       />
     </Col>
   ) : (

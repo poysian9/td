@@ -21,7 +21,7 @@ export const nomicsApi = createApi({
       query: ({ id }) => createRequest(`/nomicsdata/coinid/${id}`),
     }),
     getCoinCSVData: bulider.query({
-      query: ({ id }) => createRequest(`/csv/nomicsid/${id}`),
+      query: ({ id }) => createRequest(`/csv/coingeckoid/${id}`),
     }),
     getCoinHistory: bulider.query({
       query: ({ timePeriod, id }) =>

@@ -15,30 +15,28 @@ const CryptoMCap = () => {
       .then((res) => res.json())
       .then((marketCap) => {
         setmarketCap(marketCap);
-        // return data;
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
-
   if (loading) return <Loader />;
-
-  // console.log(data);
 
   return (
     <>
       <Col className="cryptomarketcap">
         <div>
           The global cryptocurrency market cap today is $
-          {marketCap.market_cap ? millify(marketCap.market_cap) : ""}, a{" "}
-          {marketCap["1d"].market_cap_change_pct < 0 ? (
+          {marketCap.total_market_cap ? millify(marketCap.total_market_cap,{
+                                                          precision: 3
+                                                          }) : ""}, a{" "}
+          {marketCap.market_cap_change_pct < 0 ? (
             <>
               <CaretDownOutlined
                 className="downsymbol"
                 style={{ color: "#E15241", lineheight: "2rem" }}
               />
               {prettyNum(
-                Math.abs(marketCap["1d"]?.market_cap_change_pct) * 100,
+                Math.abs(marketCap.market_cap_change_pct),
                 {
                   precision: 2,
                   precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
@@ -53,7 +51,7 @@ const CryptoMCap = () => {
                 style={{ color: "#4EAF0A" }}
               />
               {prettyNum(
-                Math.abs(marketCap["1d"].market_cap_change_pct) * 100,
+                Math.abs(marketCap.market_cap_change_pct),
                 {
                   precision: 2,
                   precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,

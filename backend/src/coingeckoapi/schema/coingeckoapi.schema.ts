@@ -25,6 +25,12 @@ export class coingecko {
 
   @Prop({ required: true, type: String })
   coin_id: string;
+
+  @Prop({ required: true, type: String })
+  target_coin_id: string;
+  
+  @Prop({ required: true, type: Number })
+  spread: number;
 }
 
 export const coingeckoSchema = SchemaFactory.createForClass(coingecko);

@@ -10,17 +10,17 @@ export class NomicsCryptoDataController {
   ) {}
 
   @Post('updatecryptodata')
-  @ApiTags('Coins')
-  updatenomicsdata() {
+  @ApiTags('Coin Data')
+  async updatenomicsdata() {
     return this.nomicscryptodataService.updatenomicsdata();
   }
 
   @Get('coinid')
   @ApiResponse({
     type: [NomicsCryptoData],
-    description: 'All token data from nomics',
+    description: 'All token data from coingecko',
   })
-  @ApiTags('Coins')
+  @ApiTags('Coin Data')
   async readAll() {
     return await this.nomicscryptodataService.readAll();
   }
@@ -28,9 +28,9 @@ export class NomicsCryptoDataController {
   @Get('coinid/:id')
   @ApiResponse({
     type: NomicsCryptoData,
-    description: 'A tokens data from nomics',
+    description: "A single token's data from coingecko",
   })
-  @ApiTags('Coins')
+  @ApiTags('Coin Data')
   async readCurrency(@Param('id') id: string) {
     return await this.nomicscryptodataService.readCurrency(id);
   }
@@ -40,7 +40,7 @@ export class NomicsCryptoDataController {
     type: [NomicsCryptoData],
     description: 'Biggest Gains Daily',
   })
-  @ApiTags('Coins')
+  @ApiTags('Coin Data')
   async biggestDailyGainer() {
     return await this.nomicscryptodataService.biggestDailyGainer();
   }
@@ -48,25 +48,25 @@ export class NomicsCryptoDataController {
   @Get('biggestweeklygainer')
   @ApiResponse({
     type: [NomicsCryptoData],
-    description: 'Biggest Gainers weekly',
+    description: 'Biggest Gainers Weekly',
   })
-  @ApiTags('Coins')
+  @ApiTags('Coin Data')
   async biggestWeeklyGainer() {
     return await this.nomicscryptodataService.biggestWeeklyGainer();
   }
 
-  @Get('coins/:fiat')
-  @ApiTags('FIAT')
-  updatefiatnomics(@Param('fiat') fiat: string) {
-    return this.nomicscryptodataService.updatefiatnomics(fiat);
-  }
+  // @Get('coins/:fiat')
+  // @ApiTags('FIAT')
+  // updatefiatnomics(@Param('fiat') fiat: string) {
+  //   return this.nomicscryptodataService.updatefiatnomics(fiat);
+  // }
 
   @Get('merge')
   @ApiResponse({
     type: [NomicsCryptoData],
     description: 'Merge Database and nomics Data',
   })
-  @ApiTags('Coins')
+  @ApiTags('Coin Data')
   async merge() {
     return await this.nomicscryptodataService.merge();
   }

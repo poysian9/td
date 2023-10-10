@@ -21,7 +21,6 @@ const TopTen = () => {
       .then((res) => res.json())
       .then((assets) => {
         setassets(assets);
-        // return data;
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -29,14 +28,14 @@ const TopTen = () => {
 
   if (loading) return <Loader />;
 
-  const data = assets.slice(0, 10);
+  // const data = assets.slice(0, 10);
 
   const columns = [
     {
       title: "#",
       dataIndex: "rank",
       key: "Rank3",
-      width: 67,
+      width: 50,
 
       render(text) {
         return text !== undefined
@@ -48,7 +47,7 @@ const TopTen = () => {
             };
       },
       defaultSortOrder: "ascend",
-      sorter: (a, b) => a.rank - b.rank,
+      // sorter: (a, b) => a.rank - b.rank,
     },
 
     {
@@ -58,7 +57,7 @@ const TopTen = () => {
       render: (text, record, index) => (
         <a href={`/cryptocurrencies/${record.id}`}>
           <img src={record.logo_url} alt="icons" height={28} width={28} />{" "}
-          {text} ({record.symbol}){" "}
+          {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),
       width: 300,
@@ -86,18 +85,18 @@ const TopTen = () => {
     },
     {
       title: "1h",
-      dataIndex: ["onehour", "price_change_pct"],
+      dataIndex: "price_change_percentage_1h",
       key: "percentchange1h3",
       render(text) {
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -114,41 +113,26 @@ const TopTen = () => {
       },
       width: 101,
       sorter: (a, b) => {
-        if (
-          a &&
-          a["onehour"] &&
-          a["onehour"].price_change_pct &&
-          b &&
-          b["onehour"] &&
-          b["onehour"].price_change_pct
-        ) {
-          return a["onehour"].price_change_pct - b["onehour"].price_change_pct;
-        } else if (a && a["onehour"] && a["onehour"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["onehour"] && b["onehour"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
+        const priceChangeA = a?.price_change_percentage_1h ?? 0;
+        const priceChangeB = b?.price_change_percentage_1h ?? 0;
 
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
+        return priceChangeA - priceChangeB;
       },
     },
     {
       title: "24h",
-      dataIndex: ["oneday", "price_change_pct"],
+      dataIndex: "price_change_percentage_24h",
       key: "percentchange24h3",
       render(text) {
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -165,41 +149,25 @@ const TopTen = () => {
       },
       width: 101,
       sorter: (a, b) => {
-        if (
-          a &&
-          a["oneday"] &&
-          a["oneday"].price_change_pct &&
-          b &&
-          b["oneday"] &&
-          b["oneday"].price_change_pct
-        ) {
-          return a["oneday"].price_change_pct - b["oneday"].price_change_pct;
-        } else if (a && a["oneday"] && a["oneday"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["oneday"] && b["oneday"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
-
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
+        const priceChangeA = a?.price_change_percentage_24h ?? 0;
+        const priceChangeB = b?.price_change_percentage_24h ?? 0;
+        return priceChangeA - priceChangeB;
       },
     },
     {
       title: "7d",
-      dataIndex: ["sevenday", "price_change_pct"],
+      dataIndex: "price_change_percentage_7d",
       key: "percentchange7d3",
       render(text) {
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}
@@ -216,27 +184,9 @@ const TopTen = () => {
       },
       width: 101,
       sorter: (a, b) => {
-        if (
-          a &&
-          a["sevenday"] &&
-          a["sevenday"].price_change_pct &&
-          b &&
-          b["sevenday"] &&
-          b["sevenday"].price_change_pct
-        ) {
-          return (
-            a["sevenday"].price_change_pct - b["sevenday"].price_change_pct
-          );
-        } else if (a && a["sevenday"] && a["sevenday"].price_change_pct) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["sevenday"] && b["sevenday"].price_change_pct) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
-
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
+        const priceChangeA = a?.price_change_percentage_7d ?? 0;
+        const priceChangeB = b?.price_change_percentage_7d ?? 0;
+        return priceChangeA - priceChangeB;
       },
     },
     {
@@ -245,13 +195,11 @@ const TopTen = () => {
       key: "statuses3",
 
       render(text) {
-        return text !== "Sell_Only"
-          ? {
-              children: <div>{text[0].statuses}</div>,
-            }
-          : {
-              children: <div>Sell Only</div>,
-            };
+        return text !== "Sell_Only" && text[0]?.statuses ? (
+          <div>{text[0].statuses}</div>
+        ) : (
+          <div>Sell Only</div>
+        );
       },
       width: 100,
     },
@@ -260,14 +208,14 @@ const TopTen = () => {
       dataIndex: "coindata",
       key: "primarysectors3",
       width: 100,
-      render: (text) => <>{text[0].primarysector}</>,
+      render: (text) => <>{text[0]?.primarysector}</>,
     },
     {
       title: "Secondary Sector",
       dataIndex: "coindata",
       key: "secondarysectors3",
       width: 100,
-      render: (text) => <>{text[0].secondarysector}</>,
+      render: (text) => <>{text[0]?.secondarysector}</>,
     },
 
     {
@@ -279,7 +227,7 @@ const TopTen = () => {
           ? {
               children: (
                 <div>
-                  {" "}
+                  {"$"}
                   {prettyNum(text, {
                     precision: 0,
                     thousandsSeparator: ",",
@@ -299,7 +247,7 @@ const TopTen = () => {
     },
     {
       title: "24h Volume",
-      dataIndex: ["oneday", "volume"],
+      dataIndex: "volume_24h",
       key: "volumes3",
       render: (text) => (
         <>
@@ -313,25 +261,10 @@ const TopTen = () => {
       ),
       width: 160,
       sorter: (a, b) => {
-        if (
-          a &&
-          a["oneday"] &&
-          a["oneday"].volume &&
-          b &&
-          b["oneday"] &&
-          b["oneday"].volume
-        ) {
-          return a["oneday"].volume - b["oneday"].volume;
-        } else if (a && a["oneday"] && a["oneday"].volume) {
-          // That means be has null rechargeType, so a will come last.
-          return 0;
-        } else if (b && b["oneday"] && b["oneday"].volume) {
-          // That means a has null rechargeType so b will come last.
-          return 0;
-        }
+        const volumeChangeA = a?.volume_24h ?? 0;
+        const volumeChangeB = b?.volume_24h ?? 0;
 
-        // Both rechargeType has null value so there will be no order change.
-        return 0;
+        return volumeChangeA - volumeChangeB;
       },
     },
   ];
@@ -340,8 +273,8 @@ const TopTen = () => {
     <>
       <Table
         columns={columns}
-        dataSource={data}
-        pagination={false}
+        dataSource={assets}
+        pagination={{ pageSize: 10 }}
         scroll={{
           x: 1300,
         }}

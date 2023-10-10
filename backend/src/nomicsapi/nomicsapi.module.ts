@@ -3,11 +3,15 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NomicsapiController } from './nomicsapi.controller';
 import { NomicsapiService } from './nomicsapi.service';
-import { Nomics, NomicsSchema } from './schema/nomicsapi.schema';
+import { GlobalData, GlobalDataSchema } from './schema/globalData.schema';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Nomics.name, schema: NomicsSchema }]),
+    ScheduleModule.forRoot(),
+    MongooseModule.forFeature([
+                               { name: GlobalData.name, schema: GlobalDataSchema }
+                              ]),
     HttpModule,
   ],
   controllers: [NomicsapiController],

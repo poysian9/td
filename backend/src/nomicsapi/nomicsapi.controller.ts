@@ -7,47 +7,45 @@ export class NomicsapiController {
   constructor(private readonly nomicsapiService: NomicsapiService) {}
 
   @Get('max/:coinid')
-  @ApiTags('History')
+  @ApiTags('Coin History')
   getmaxHistory(@Param('coinid') coinid: string) {
     return this.nomicsapiService.getmaxHistory({ coinid });
   }
 
-  @Get('3y/:coinid')
-  @ApiTags('History')
-  get3yHistory(@Param('coinid') coinid: string) {
-    return this.nomicsapiService.get3yHistory({ coinid });
-  }
-
   @Get('1y/:coinid')
-  @ApiTags('History')
+  @ApiTags('Coin History')
   get1yHistory(@Param('coinid') coinid: string) {
     return this.nomicsapiService.get1yHistory({ coinid });
   }
 
   @Get('30d/:coinid')
-  @ApiTags('History')
+  @ApiTags('Coin History')
   get30dHistory(@Param('coinid') coinid: string) {
-    return this.nomicsapiService.get30dHistory({ coinid });
+    return this.nomicsapiService.get1mHistory({ coinid });
   }
 
   @Get('7d/:coinid')
-  @ApiTags('History')
+  @ApiTags('Coin History')
   get7dHistory(@Param('coinid') coinid: string) {
     return this.nomicsapiService.get7dHistory({ coinid });
   }
+
   @Get('24h/:coinid')
-  @ApiTags('History')
+  @ApiTags('Coin History')
   get24hHistory(@Param('coinid') coinid: string) {
-    return this.nomicsapiService.get24hHistory({ coinid });
+    return this.nomicsapiService.get1dHistory({ coinid });
   }
-  @Get('website/:coinid')
-  @ApiTags('Coin Data')
-  getWebsites(@Param('coinid') coinid: string) {
-    return this.nomicsapiService.getWebsites(coinid);
-  }
+
   @Get('global')
-  @ApiTags('Coin Data')
+  @ApiTags('Global Data')
   getGlobal() {
     return this.nomicsapiService.getGlobal();
   }
+  
+  @Get('readGlobal')
+  @ApiTags('Global Data')
+  readGlobal() {
+    return this.nomicsapiService.readGlobal();
+  }
+
 }

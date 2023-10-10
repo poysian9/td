@@ -16,26 +16,24 @@ import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import Loader from "../components/Loader";
 import LineChart from "../components/LineChart";
 import {
-  useGetCoinHistoryQuery,
   useGetCoinDataQuery,
   useGetCoinCSVDataQuery,
 } from "../services/nomicsApi";
 import MarketDepth from "../components/MarketDepth";
 import Websites from "../components/Websites";
-import Advice from "../components/Advice";
 import { BreadCrumbs } from "../components";
 import defaultImg from "../images/samih_sui.png";
+import GoBack from "../components/GoBack";
 
 const { Panel } = Collapse;
 
 const CryptoDetails = () => {
   const { Title, Text } = Typography;
-  const ltv = "Positive";
   const { Option } = Select;
   const { id } = useParams();
   const [loading, setLoading] = useState(true); //
   const [error, setError] = useState(null);
-  const time = ["24h", "7d", "30d", "1y", "max"];
+  const time = ["24h", "7d", "30d", "1y", "Max"];
   const [timePeriod, setTimePeriod] = useState("24h");
 
   const { data: cryptoDetails } = useGetCoinDataQuery({ id });
@@ -47,7 +45,6 @@ const CryptoDetails = () => {
       .then((res) => res.json())
       .then((coinHistory) => {
         setcoinHistory(coinHistory);
-        // return data;
       })
 
       .finally(() => setLoading(false));
@@ -56,7 +53,7 @@ const CryptoDetails = () => {
   const [messariData, setMessariData] = useState("");
   useEffect(() => {
     fetch(
-      process.env.REACT_APP_API_URL + `/messari/api/v2/assets/${id}/profile`
+      process.env.REACT_APP_API_URL + `/messari/assets/${id}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -71,100 +68,84 @@ const CryptoDetails = () => {
   if (loading) return <Loader />;
 
   const changeTime = (time) => {
-    if (time === "24h") {
-      return (
-        <>
-          Change:{" "}
-          {prettyNum(cryptoDetails?.oneday?.price_change_pct * 100, {
-            precision: 2,
-            precisionSetting: PRECISION_SETTING.FIXED,
-          })}{" "}
-          %
-        </>
-      );
-    } else if (time === "7d") {
-      return (
-        <>
-          Change:{" "}
-          {prettyNum(cryptoDetails?.sevenday?.price_change_pct * 100, {
-            precision: 2,
-            precisionSetting: PRECISION_SETTING.FIXED,
-          })}{" "}
-          %
-        </>
-      );
-    } else if (time === "30d") {
-      return (
-        <>
-          Change:{" "}
-          {prettyNum(cryptoDetails?.thirtyday?.price_change_pct * 100, {
-            precision: 2,
-            precisionSetting: PRECISION_SETTING.FIXED,
-          })}{" "}
-          %
-        </>
-      );
-    } else if (time === "1y") {
-      return (
-        <>
-          Change:{" "}
-          {prettyNum(cryptoDetails?.oneyear?.price_change_pct * 100, {
-            precision: 2,
-            precisionSetting: PRECISION_SETTING.FIXED,
-          })}{" "}
-          %
-        </>
-      );
-    } else if (time === "max") {
+    if (time === "max") {
       return "";
     }
+  
+    const timeMap = {
+      "24h": cryptoDetails?.price_change_percentage_24h,
+      "7d": cryptoDetails?.price_change_percentage_7d,
+      "30d": cryptoDetails?.price_change_percentage_30d,
+      "1y": cryptoDetails?.price_change_percentage_1y,
+    };
+  
+    const change = timeMap[time];
+  
+    return (
+      <>
+        Change:{" "}
+        {prettyNum(change, {
+          precision: 2,
+          precisionSetting: PRECISION_SETTING.FIXED,
+        })}{" "}
+        %
+      </>
+    );
   };
-
-  const percentAth =
-    cryptoDetails !== undefined
-      ? (1 - cryptoDetails.price / cryptoDetails.high) * 100
-      : "";
   const stats =
-    cryptoDetails !== undefined
+    cryptoDetails 
       ? [
           {
             title: "Category",
-            value: messariData.length > 0 ? messariData[0].category : "",
+            value: assetData && assetData.secondarysector
+              ? assetData.secondarysector
+              : (messariData && messariData.category)
+                ? messariData.category
+                : "-"
           },
           {
             title: "Sector",
-            value:
-              messariData.length > 0
-                ? messariData[0].sector
-                : assetData.primarysector,
+            value: assetData && assetData.primarysector
+              ? assetData.primarysector
+              : (messariData && messariData.sector)
+                ? messariData.sector
+                : "-"
           },
           {
             title: "Consensus Mechanism",
             value:
-              (messariData.length > 0 &&
-                messariData[0].general_consensus_mechanism) ||
-              "",
+              messariData && messariData.general_consensus_mechanism
+              ? messariData.general_consensus_mechanism
+              : "-",
           },
           {
             title: "Token Type",
-            value: (messariData.length > 0 && messariData[0].token_type) || "",
+            value: 
+              messariData && messariData.token_type
+              ? messariData.token_type
+              : "-",
           },
           {
             title: "Token Usage",
-            value: (messariData.length > 0 && messariData[0].token_usage) || "",
+            value: 
+              messariData && messariData.token_usage
+              ? messariData.token_usage
+              : "-",
           },
           {
             title: "Volume (24H)",
             value: ` $${
-              cryptoDetails.oneday !== undefined
-                ? millify(cryptoDetails.oneday.volume)
-                : "Null"
+              cryptoDetails
+                ? millify(cryptoDetails.volume_24h)
+                : "$-"
             }`,
           },
           {
             title: "Market Cap",
-            value: `$${
-              cryptoDetails.market_cap && millify(cryptoDetails.market_cap)
+            value: ` $${
+              cryptoDetails
+                ? millify(cryptoDetails.market_cap)
+                : "$-"
             }`,
           },
           {
@@ -177,68 +158,118 @@ const CryptoDetails = () => {
                       precision: 6,
                       precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
                     })
-                  : prettyNum(cryptoDetails.high, {
+                  : cryptoDetails.high
+                  ? prettyNum(cryptoDetails.high, {
+                      thousandsSeparator: ",",
                       precision: 2,
                       precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
-                    })}
+                    })
+                  : "-"
+                }
               </Col>
             ),
           },
           {
             title: "ATH Date",
             value: cryptoDetails.high_timestamp
-              ? cryptoDetails.high_timestamp.slice(
-                  0,
-                  cryptoDetails.high_timestamp.lastIndexOf("T")
-                )
-              : "",
+              ? (() => {
+                  const isoTimestamp = cryptoDetails.high_timestamp;
+                  const dateObj = new Date(isoTimestamp);
+                  const day = dateObj.getDate();
+                  const month = dateObj.toLocaleString('default', { month: 'long' }); // Full month name
+                  const year = dateObj.getFullYear();
+                  return `${day}, ${month}, ${year}`;
+                })()
+              : "-",
           },
           {
             title: "Down from ATH",
-            value:
-              "-" +
-              prettyNum(percentAth, {
-                precision: 2,
-                precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
-              }) +
-              "%",
-          },
-          {
-            title: "Circulating Supply",
-            value: `${prettyNum(cryptoDetails.circulating_supply, {
-              thousandsSeparator: ",",
-              precision: 0,
-              precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
-            })}`,
-          },
-          {
-            title: "Max Supply",
-            value: `${prettyNum(
-              (messariData.length > 0 && messariData[0].max_supply) ||
-                cryptoDetails.max_supply,
-              {
+            value: 
+              cryptoDetails
+              ? prettyNum(cryptoDetails?.high_change_percentage, {
                 thousandsSeparator: ",",
                 precision: 0,
                 precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
-              }
-            )}`,
+              }) 
+              + "%"
+              : "-",
           },
           {
-            title: "Emission Type",
-            value:
-              (messariData.length > 0 &&
-                messariData[0].general_emission_type) ||
-              "",
+            title: "ATL",
+            value: (
+              <Col>
+                $
+                {cryptoDetails?.low < 1
+                  ? prettyNum(cryptoDetails.low, {
+                      precision: 6,
+                      precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
+                    })
+                  : cryptoDetails.low
+                  ? prettyNum(cryptoDetails.low, {
+                      thousandsSeparator: ",",
+                      precision: 2,
+                      precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
+                    })
+                  : "-"
+                }
+              </Col>
+            ),
+          },
+          {
+            title: "ATL Date",
+            value: cryptoDetails?.low_timestamp
+              ? (() => {
+                  const isoTimestamp = cryptoDetails.low_timestamp;
+                  const dateObj = new Date(isoTimestamp);
+                  const day = dateObj.getDate();
+                  const month = dateObj.toLocaleString('default', { month: 'long' }); // Full month name
+                  const year = dateObj.getFullYear();
+                  return `${day}, ${month}, ${year}`;
+                })()
+              : "-",
+          },
+          {
+            title: "Up from ATL",
+            value: 
+              cryptoDetails
+              ? prettyNum(cryptoDetails?.low_change_percentage, {
+                thousandsSeparator: ",",
+                precision: 0,
+                precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
+              }) 
+              + "%"
+              : "-",
+          },
+          {
+            title: "Circulating Supply",
+            value: 
+              cryptoDetails
+              ? prettyNum(cryptoDetails?.circulating_supply, {
+                thousandsSeparator: ",",
+                precision: 0,
+                precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
+              })
+              : "-",
+          },
+          {
+            title: "Max Supply",
+            value: 
+              cryptoDetails
+              ? prettyNum(cryptoDetails?.max_supply, {
+                thousandsSeparator: ",",
+                precision: 0,
+                precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
+              })
+              : "-",
           },
         ]
-      : "";
+      : "-";
 
-  //only return the page when cryptoDetails exists
-  return cryptoDetails !== undefined ? (
+  return cryptoDetails && assetData ? (
     // Crypto Status Reasoning
     <Col className="coin-status-container">
       <Row>
-        {assetData.statuses !== undefined ? (
+        {assetData.statuses ? (
           <Col className="status-reasoning-container">
             {assetData.statuses !== "Active" ? (
               <Alert
@@ -248,15 +279,25 @@ const CryptoDetails = () => {
                     : ""
                 }
                 description={
-                  assetData.assetdescription
-                    ? assetData.statusreasoning
-                        .replace(/_/g, "<>")
-                        .replace(/"/g, "")
-                        .replace(
-                          /null/g,
-                          "Please contact a Trader for more information."
-                        )
-                    : ""
+                  assetData.assetdescription ? (
+                    <ul>
+                      {assetData.statusreasoning
+                        .split("-")
+                        .map((reason, index) => {
+                          const trimmedReason = reason.replace(/"/g, "").trim();
+                          if (trimmedReason) {
+                            return (
+                              <li key={index}>
+                                {trimmedReason}
+                              </li>
+                            );
+                          }
+                          return null; // Skip null or empty reasons
+                        })}
+                    </ul>
+                  ) : (
+                    ""
+                  )
                 }
                 type="warning"
                 showIcon
@@ -269,13 +310,15 @@ const CryptoDetails = () => {
           ""
         )}
       </Row>
-
+      
+      {/* BreadCrumbs */}
       <Row>
         <Col className="general-container">
           <BreadCrumbs />
         </Col>
       </Row>
 
+      {/* Crypto Details */}
       <Row>
         <Col className="coin-heading-container" span={11}>
           <Col className="rank-subheader">Rank #{cryptoDetails.rank}</Col>
@@ -290,7 +333,7 @@ const CryptoDetails = () => {
                 width={28}
               />
               {"  "}
-              {cryptoDetails.name} ({cryptoDetails.symbol})
+              {cryptoDetails.name} ({cryptoDetails.symbol.toUpperCase()})
             </Title>
           </Col>
           <Row className="coin-price">
@@ -302,13 +345,14 @@ const CryptoDetails = () => {
                     precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
                   })
                 : prettyNum(cryptoDetails.price, {
+                    thousandsSeparator: ",",
                     precision: 1,
                     precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
                   })}{" "}
             </Col>
             <Col className="change">
-              {cryptoDetails?.oneday !== undefined ? (
-                cryptoDetails.oneday.price_change_pct < 0 ? (
+              {cryptoDetails ? (
+                cryptoDetails.price_change_percentage_24h < 0 ? (
                   <>
                     <CaretDownOutlined
                       className="downsymbol"
@@ -316,7 +360,7 @@ const CryptoDetails = () => {
                     />
                     <div style={{ color: "#E15241" }}>
                       {prettyNum(
-                        Math.abs(cryptoDetails.oneday.price_change_pct) * 100,
+                        Math.abs(cryptoDetails.price_change_percentage_24h),
                         {
                           precision: 2,
                           precisionSetting:
@@ -334,7 +378,7 @@ const CryptoDetails = () => {
                     />
                     <div style={{ color: "#4EAF0A" }}>
                       {prettyNum(
-                        Math.abs(cryptoDetails.oneday.price_change_pct) * 100,
+                        Math.abs(cryptoDetails.price_change_percentage_24h),
                         {
                           precision: 2,
                           precisionSetting:
@@ -350,6 +394,8 @@ const CryptoDetails = () => {
               )}
             </Col>
           </Row>
+
+          {/* Website Buttons */}
           <Col className="general-container">
             {" "}
             <Websites
@@ -357,8 +403,63 @@ const CryptoDetails = () => {
               messarilink={assetData.messari}
             />{" "}
           </Col>
-          <Col>
-            <Advice id={id} />
+
+          {/* // {Profile} */}
+          <Col className="general-container" >
+            <Row>
+              <Col className="profile-container" style={{ paddingTop: 0 }}>
+                <Title level={3} style={{ marginTop: 0 }} className="coin-profile-heading">
+                  Profile
+                </Title>
+
+                <Tabs defaultActiveKey="1" style={{maxHeight: '330px', overflowY: 'auto'}}>
+                  <Tabs.TabPane tab="Overview" key="1">
+                    {messariData && messariData.project_details 
+                    ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: messariData.project_details,
+                        }}
+                      />
+                      ) 
+                    : assetData.assetdescription 
+                    ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: assetData.assetdescription,
+                        }}
+                      />
+                      ) 
+                    : "N/A"
+                    }
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Token Economics" key="2">
+                    {messariData && messariData.token_usage_details 
+                    ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: messariData.token_usage_details,
+                        }}
+                      />
+                      ) 
+                    : "N/A"
+                    }
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="Technology" key="3">
+                    {messariData && messariData.technology_details 
+                    ? (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: messariData.technology_details,
+                        }}
+                      />
+                      ) 
+                    : "N/A"
+                    }
+                  </Tabs.TabPane>
+                </Tabs>
+              </Col>
+            </Row>
           </Col>
         </Col>
 
@@ -387,8 +488,8 @@ const CryptoDetails = () => {
 
       {/* // {Crypto Chart} */}
       <Row>
-        <Col className="chart-container" span={15}>
-          <Title level={3} className="coin-details-heading">
+        <Col className="chart-container">
+          <Title level={3} className="coin-profile-heading" style={{ marginTop: 'auto' }}>
             Price Chart
           </Title>
           <Col className="general-container">
@@ -404,7 +505,7 @@ const CryptoDetails = () => {
             </Select>
           </Col>
           <LineChart
-            coinHistory={coinHistory !== undefined ? coinHistory : ""}
+            coinHistory={coinHistory ? coinHistory : ""}
             currentPrice={
               cryptoDetails.price < 1
                 ? prettyNum(cryptoDetails.price, {
@@ -419,134 +520,22 @@ const CryptoDetails = () => {
             changeData={changeTime(timePeriod)}
           />
         </Col>
-
-        {/* // {Research} */}
-        <Col className="general-container" span={8} offset={1}>
-          <Row>
-            <Col className="research-container">
-              <Title level={3} className="coin-details-heading">
-                Research - {assetData.primarysector}:{" "}
-                {assetData.secondarysector}
-              </Title>
-
-              <Tabs>
-                <Tabs.TabPane tab="Sector Guidance" key="3">
-                  <Collapse>
-                    <Panel header="Long-Term House View" key="1">
-                      <p>
-                        COMING SOON
-                        {/* {ltv === "Positive" ? (
-                          <p style={{ color: "#4EAF0A" }}>{ltv}</p>
-                        ) : ltv === "Neutral" ? (
-                          <p style={{ color: "#808080" }}>{ltv}</p>
-                        ) : (
-                          <p style={{ color: "#E15241" }}>{ltv}</p>
-                        )}
-                        <p
-                          style={{
-                            "font-weight": "bold",
-                            "border-bottom": "1px solid",
-                          }}
-                        >
-                          Long-Term Thesis{" "}
-                        </p>
-                        We believe that Bitcoin will become widely used as an
-                        alternative money in the digital economy. Expect that
-                        other cryptocurrencies in this sector such as Bitcoin
-                        Cash and Litecoin will lose relevance over time. */}
-                      </p>
-                    </Panel>
-                    <Panel header="Short-Term House View" key="2">
-                      <p>
-                        COMING SOON
-                        {/* {ltv === "Positive" ? (
-                          <p style={{ color: "#4EAF0A" }}>{ltv}</p>
-                        ) : ltv === "Neutral" ? (
-                          <p style={{ color: "#808080" }}>{ltv}</p>
-                        ) : (
-                          <p style={{ color: "#E15241" }}>{ltv}</p>
-                        )}
-                        <p
-                          style={{
-                            "font-weight": "bold",
-                            "border-bottom": "1px solid",
-                          }}
-                        >
-                          Monthly Comments{" "}
-                        </p>
-                        Currently the Inflationary Bear Market is not ideal for
-                        Bitcoin but shows no worse decline than many growth
-                        stocks. Our expectation that this sector is positioned
-                        for relatively stronger market rebound than equities. */}
-                      </p>
-                    </Panel>
-                  </Collapse>
-                </Tabs.TabPane>
-              </Tabs>
-            </Col>
-          </Row>
-
-          {/* // {Profile} */}
-          <Row>
-            <Col className="profile-container">
-              <Title level={3} className="coin-details-heading">
-                Profile
-              </Title>
-
-              <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab="Overview" key="1">
-                  {messariData.length > 0
-                    ? messariData.map((el) => (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: el.project_details,
-                          }}
-                        />
-                      ))
-                    : ""}
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Token Economics" key="2">
-                  {messariData.length > 0
-                    ? messariData.map((el) => (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: el.token_usage_details,
-                          }}
-                        />
-                      ))
-                    : ""}
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Technology" key="3">
-                  {(messariData.length > 0 &&
-                    messariData.map((el) => (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: el.technology_details,
-                        }}
-                      />
-                    ))) ||
-                    ""}
-                </Tabs.TabPane>
-              </Tabs>
-            </Col>
-          </Row>
-        </Col>
-
+        {/* Market Depth */}
         <Col className="market-depth">
-          {/* <Title level={3} className="coin-details-heading">
+          <Title level={3} className="coin-details-heading">
             Market Depth
           </Title>
           {assetData.coingeckoid ? (
             <MarketDepth coinid={assetData.coingeckoid} />
           ) : (
             ""
-          )} */}
+          )}
         </Col>
       </Row>
-    </Col>
+      </Col>
   ) : (
-    ""
-  );
+    <GoBack/>
+      );
 };
 
 export default CryptoDetails;

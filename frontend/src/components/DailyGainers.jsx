@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Carousel, Table } from "antd";
-import { Link } from "react-router-dom";
 import { Card, Row, Col, Typography } from "antd";
 import Loader from "./Loader";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
@@ -37,11 +36,8 @@ const Dailygainers = () => {
   const activeCryptoData = cryptoData.filter(
     (status) =>
       status.coindata?.[0]?.statuses === "Active" &&
-      status.oneday?.price_change_pct > 0
+      status.price_change_percentage_24h > 0
   );
-
-  const n = 0;
-  const n_1 = 1;
 
   const columns = [
     {
@@ -73,7 +69,7 @@ const Dailygainers = () => {
             height={28}
             width={28}
           />{" "}
-          {text} ({record.symbol}){" "}
+          {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),
       width: 300,
@@ -101,18 +97,18 @@ const Dailygainers = () => {
     },
     {
       title: "24h",
-      dataIndex: ["oneday", "price_change_pct"],
+      dataIndex: "price_change_percentage_24h",
       key: "percentchange24h2",
       render(text) {
         return text !== null
           ? {
               props: {
-                style: { color: text * 100 < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
               },
               children: (
                 <div>
                   {" "}
-                  {prettyNum(text * 100, {
+                  {prettyNum(text, {
                     precision: 2,
                     precisionSetting: PRECISION_SETTING.FIXED,
                   })}

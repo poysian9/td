@@ -11,7 +11,7 @@ const Advice = ({ id }) => {
   const [adviceData, setadviceData] = useState("");
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_URL + `/csv/nomicsid/${coinid}`)
+    fetch(process.env.REACT_APP_API_URL + `/csv/coingeckoid/${coinid}`)
       .then((res) => res.json())
       .then((adviceData) => {
         setadviceData(adviceData);

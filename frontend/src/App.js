@@ -9,7 +9,6 @@ import {
   Homepage,
   Cryptocurrencies,
   CryptoDetails,
-  HeatMap,
   Research,
   WatchList,
 } from "./pages";

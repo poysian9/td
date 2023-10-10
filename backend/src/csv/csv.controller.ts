@@ -6,12 +6,14 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CsvService } from './csv.service';
-import { CSVDto } from './dto/crypto-ids.dto';
 import { CSV } from './schema/csv.schema';
+
+class updateId {
+  coingeckoid: string;
+}
 
 @Controller('csv')
 export class CsvController {
@@ -56,18 +58,6 @@ export class CsvController {
     return this.cryptoService.readName(token);
   }
 
-  @Get('nomicsid/:nomicsid')
-  @ApiOperation({
-    description: 'Get a specific crypto by nomicsid',
-  })
-  @ApiResponse({
-    type: CSV,
-    description: 'Crypto details',
-  })
-  @ApiTags('Crypto CSV')
-  readNomicsid(@Param('nomicsid') token: string) {
-    return this.cryptoService.readNomicsid(token);
-  }
   @Get('coingeckoid/:coingeckoid')
   @ApiOperation({
     description: 'Get cryptos by coingeckoid',
@@ -93,7 +83,7 @@ export class CsvController {
     return await this.cryptoService.readTicker(token);
   }
 
-  @Get('status/:statuses')
+  @Get('statuses/:statuses')
   @ApiOperation({
     description: 'Get crypto by status',
   })
@@ -119,19 +109,6 @@ export class CsvController {
     return await this.cryptoService.readSector(token);
   }
 
-  @Get('watchlist/:watchlist')
-  @ApiOperation({
-    description: 'Get cryptos by watchlist',
-  })
-  @ApiResponse({
-    type: [CSV],
-    description: 'Crypto details by watchlist',
-  })
-  @ApiTags('Crypto CSV')
-  async readWatchlist(@Param('watchlist') token: string) {
-    return await this.cryptoService.readWatchlist(token);
-  }
-
   @Get('status')
   @ApiOperation({
     description: 'Get cryptos by status',
@@ -140,34 +117,36 @@ export class CsvController {
     type: CSV,
     description: 'Get cryptos by status',
   })
-  @ApiTags('statuses')
+  @ApiTags('Crypto CSV')
   async assetStatuses() {
     return await this.cryptoService.assetStatuses();
   }
 
-  // @Put(':token')
-  // @ApiOperation({
-  //   description: 'Update a specific crypto price',
-  // })
-  // @ApiResponse({
-  //   type: CSV,
-  //   description: 'A crypto price',
-  // })
-  // @ApiTags('Crypto CSV')
-  // update(@Param('token') token: string, @Body() body: CSVDto) {
-  //   return this.cryptoService.update(token, body);
-  // }
+  @Put('update/:coingeckoid')
+  @ApiOperation({
+    description: 'Update a specific crypto id',
+  })
+  @ApiResponse({
+    type: CSV,
+    description: 'A crypto id',
+  })
+  @ApiTags('Crypto CSV')
+  updateCoingeckoid(
+    @Param('coingeckoid') coingeckoid: string, 
+    @Body() body: CSV) {
+    return this.cryptoService.updateCoingeckoid(coingeckoid, body);
+  }
 
-  // @Delete(':token')
-  // @ApiOperation({
-  //   description: 'Delete a specific crypto price',
-  // })
-  // @ApiResponse({
-  //   type: CSV,
-  //   description: 'A crypto price',
-  // })
-  // @ApiTags('Crypto CSV')
-  // delete(@Param('token') token: string) {
-  //   return this.cryptoService.delete(token);
-  // }
+  @Delete('delete/:coingeckoid')
+  @ApiOperation({
+    description: 'Delete a specific crypto from the database',
+  })
+  @ApiResponse({
+    type: CSV,
+    description: 'A crypto id',
+  })
+  @ApiTags('Crypto CSV')
+  delete(@Param('coingeckoid') token: string) {
+    return this.cryptoService.delete(token);
+  }
 }

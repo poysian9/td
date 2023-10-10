@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type MessariSchemaDocument = MessariSchema & Document;
+export type MessariDocument = Messari & Document;
 
-@Schema({ collection: 'messari' })
-export class MessariSchema {
+@Schema({ collection: 'messariData' })
+export class Messari {
   @Prop({ type: String })
   symbol: string;
 
@@ -12,7 +12,7 @@ export class MessariSchema {
   name: string;
 
   @Prop({ type: String })
-  tagline: string;
+  id: string;
 
   @Prop({ type: String })
   category: string;
@@ -24,15 +24,6 @@ export class MessariSchema {
   project_details: string;
 
   @Prop({ type: String })
-  regulatory_details: string;
-
-  @Prop({ type: String })
-  sfar_score: number;
-
-  @Prop({ type: String })
-  sfar_summary: string;
-
-  @Prop({ type: String })
   token_type: string;
 
   @Prop({ type: String })
@@ -42,25 +33,10 @@ export class MessariSchema {
   token_usage_details: string;
 
   @Prop({ type: String })
-  general_emission_type: string;
-
-  @Prop({ type: String })
-  precise_emission_type: string;
-
-  @Prop({ type: String })
-  is_capped_supply: boolean;
-
-  @Prop({ type: String })
-  max_supply: number;
-
-  @Prop({ type: String })
-  general_consensus_mechanism: string;
-
-  @Prop({ type: String })
   technology_details: string;
 
   @Prop({ type: String })
-  governance_details: string;
+  general_consensus_mechanism: string;
 }
 
-export const MessariDataSchema = SchemaFactory.createForClass(MessariSchema);
+export const MessariDataSchema = SchemaFactory.createForClass(Messari);
