@@ -1,15 +1,11 @@
-import { Space, Table, Tag } from "antd";
-import { Link } from "react-router-dom";
+import { Table } from "antd";
 import { useState, useEffect } from "react";
-import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import React from "react";
-import { LeftCircleFilled } from "@ant-design/icons";
-import { fixControlledValue } from "antd/lib/input/Input";
 import Loader from "./Loader";
 
 const ResearchTable = () => {
   const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [data, setdata] = useState("");
 
   useEffect(() => {

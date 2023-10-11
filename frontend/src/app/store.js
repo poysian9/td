@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { nomicsApi } from "../services/nomicsApi";
-import { coingeckoApi } from "../services/coingeckoApi";
 
 export default configureStore({
   reducer: {

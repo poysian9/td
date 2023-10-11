@@ -14,7 +14,7 @@ const CryptoTable = () => {
   const { data: cryptosList } = useGetCoinsQuery(); // Use your API query
   const [cryptos, setCryptos] = useState([]);
   const [assets, setassets] = useState("");
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [filteredInfo, setFilteredInfo] = useState({});
   const handleChange = (sorter, filters) => {

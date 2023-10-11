@@ -9,8 +9,6 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Typography } from "antd";
-import prettyNum, { PRECISION_SETTING } from "pretty-num";
 
 const LineChart = ({ coinHistory, currentPrice, changeData }) => {
   // Check if coinHistory is defined and has a 'prices' property

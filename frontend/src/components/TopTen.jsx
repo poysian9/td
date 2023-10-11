@@ -1,20 +1,15 @@
-import { Table, Typography, Col } from "antd";
+import { Table } from "antd";
 import { useState, useEffect } from "react";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import React from "react";
 
 import Loader from "./Loader";
 
-const { Title } = Typography;
-
 const TopTen = () => {
-  const [filteredInfo, setFilteredInfo] = useState({});
 
   const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [assets, setassets] = useState("");
-  const top = "topLeft";
-  const bottom = "bottomRight";
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_URL + `/nomicsdata/merge`)

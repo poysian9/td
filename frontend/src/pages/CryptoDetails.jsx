@@ -9,7 +9,6 @@ import {
   Tabs,
   Alert,
   List,
-  Collapse,
 } from "antd";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
@@ -25,14 +24,12 @@ import { BreadCrumbs } from "../components";
 import defaultImg from "../images/samih_sui.png";
 import GoBack from "../components/GoBack";
 
-const { Panel } = Collapse;
-
 const CryptoDetails = () => {
   const { Title, Text } = Typography;
   const { Option } = Select;
   const { id } = useParams();
   const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const time = ["24h", "7d", "30d", "1y", "Max"];
   const [timePeriod, setTimePeriod] = useState("24h");
 

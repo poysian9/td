@@ -7,7 +7,7 @@ import { Table } from "antd";
 const Advice = ({ id }) => {
   const coinid = id;
   const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [adviceData, setadviceData] = useState("");
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Advice = ({ id }) => {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [coinid]);
 
   if (loading) return <Loader />;
 

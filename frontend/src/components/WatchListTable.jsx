@@ -1,20 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Col, Table, Typography} from "antd";
+import { Table } from "antd";
 import Loader from "./Loader";
-import { useReducer } from "react";
+// import { useReducer } from "react";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
-import Explorers from "./Explorers";
-import CryptoMCap from "./CryptoMCap";
-import BreadCrumbs from "./BreadCrumbs";
-const { Title } = Typography;
 
 const WatchListTable = () => {
   const [watchAssets, setwatchAssets] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [favorite, toggle] = useReducer((favorite) => !favorite, false);
+  const [, setError] = useState(false);
+  // const [, toggle] = useReducer((favorite) => !favorite, false);
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_URL + `/nomicsdata/merge`)
@@ -27,11 +23,11 @@ const WatchListTable = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleClick = (id) => {
-    console.log("id", id);
-    toggle();
-    // TODO: Call the backend to add or remove from the watchlist
-  };
+  // const handleClick = (id) => {
+  //   console.log("id", id);
+  //   toggle();
+  //   // TODO: Call the backend to add or remove from the watchlist
+  // };
 
   if (loading) return <Loader />;
 

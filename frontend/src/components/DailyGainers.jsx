@@ -7,17 +7,11 @@ import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
 const { Title } = Typography;
 
-const contentStyle = {
-  height: "290px",
-  color: "#fff",
-  textAlign: "center",
-};
-
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Dailygainers = () => {
   const [cryptoData, setcryptoData] = useState("");
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

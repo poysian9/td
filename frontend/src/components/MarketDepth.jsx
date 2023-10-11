@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table, Tag } from "antd";
+import { Table } from "antd";
 import Loader from "./Loader";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 

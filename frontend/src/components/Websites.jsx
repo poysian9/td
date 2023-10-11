@@ -1,20 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { Card, Row, Col, Input, Typography, Button } from "antd";
+import { Button } from "antd";
 import Loader from "./Loader";
 import {
   TwitterOutlined,
   MediumOutlined,
-  DollarOutlined,
-  WarningOutlined,
 } from "@ant-design/icons";
 
 const Websites = ({ coingeckolink, messarilink }) => {
   const [data, setdata] = useState();
   const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -26,7 +23,7 @@ const Websites = ({ coingeckolink, messarilink }) => {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [id]);
 
   if (loading) return <Loader />;
 

@@ -1,9 +1,6 @@
-import { AndroidOutlined, AppleOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
 import React from "react";
-import CryptoMCap from "./CryptoMCap";
 import HeatMap from "./HeatMap";
-
 import TopTen from "./TopTen";
 
 const HomepageTabs = () => {

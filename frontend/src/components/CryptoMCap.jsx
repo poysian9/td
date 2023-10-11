@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
-import { Row, Col, Button } from "antd";
+import { Col } from "antd";
 import millify from "millify";
 import Loader from "./Loader";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
@@ -8,7 +8,7 @@ import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 const CryptoMCap = () => {
   const [marketCap, setmarketCap] = useState("");
   const [loading, setLoading] = useState(true); //
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
 
   useEffect(() => {
     fetch(process.env.REACT_APP_API_URL + `/cryptodata/global`)

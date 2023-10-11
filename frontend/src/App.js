@@ -1,7 +1,7 @@
 // Base APP File
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
-import { Layout, Typography, Space, Col, Row } from "antd";
+import { Layout, Typography, Space, Row } from "antd";
 
 import { Navbar } from "./components";
 

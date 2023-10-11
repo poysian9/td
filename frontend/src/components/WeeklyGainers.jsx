@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Carousel, Table } from "antd";
-import { Card, Row, Col, Typography } from "antd";
+import { Table } from "antd";
+import { Typography } from "antd";
 import Loader from "./Loader";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
@@ -9,7 +9,7 @@ const { Title } = Typography;
 
 const Weeklygainers = () => {
   const [cryptoData, setcryptoData] = useState("");
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
