@@ -151,8 +151,9 @@ const Weeklygainers = () => {
       <div className="home-heading-container">
         <Title level={2}>Weekly Gainers</Title>
       </div>
-      <div>
+      <div className="rounded-table-container">
         <Table
+        className="custom-table"
           pagination={false}
           columns={columns}
           dataSource={activeCryptoData.slice(0, 5)}

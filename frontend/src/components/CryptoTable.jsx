@@ -553,17 +553,20 @@ const CryptoTable = () => {
           </Select> */}
         </div>
       </div>
-      <Table
-        className="custom-table"
-        pagination={{ defaultPageSize: 100, position: [top, bottom] }}
-        columns={columns}
-        dataSource={datalist}
-        onChange={handleChange}
-        scroll={{
-          x: 600,
-        }}
-        size={"small"}      
-      />
+      <div className="rounded-table-container">
+        <Table
+          className="custom-table"
+          pagination={{ defaultPageSize: 100, position: [top, bottom] }}
+          columns={columns}
+          dataSource={datalist}
+          onChange={handleChange}
+          scroll={{
+            x: 600,
+          }}
+          size={"small"}
+          style={{ padding: "10px" }}      
+        />
+      </div>
     </Col>
   ) : (
     ""

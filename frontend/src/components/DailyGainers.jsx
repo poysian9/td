@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Carousel, Table } from "antd";
-import { Card, Row, Col, Typography } from "antd";
+import { Table } from "antd";
+import { Typography } from "antd";
 import Loader from "./Loader";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
@@ -156,14 +156,17 @@ const Dailygainers = () => {
       <div className="home-heading-container">
         <Title level={2}>Daily Gainers</Title>
       </div>
-      <Table
-        pagination={false}
-        columns={columns}
-        dataSource={activeCryptoData.slice(0, 5)}
-        scroll={{
-          x: 800,
-        }}
-      />
+      <div className="rounded-table-container">
+        <Table
+          className="custom-table"
+          pagination={false}
+          columns={columns}
+          dataSource={activeCryptoData.slice(0, 5)}
+          scroll={{
+            x: 800,
+          }}
+        />
+      </div>
     </>
   );
 };

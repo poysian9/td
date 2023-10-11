@@ -16,9 +16,7 @@ const { Title } = Typography;
 const Homepage = () => {
   return (
     <>
-      <BreadCrumbs />
-
-      <Col className="explorers-info">
+      <Col style={{ padding: "10px" }}>
         <Col className="explorers-value-heading">
           <Title level={2}>Explorers</Title>
         </Col>
@@ -37,8 +35,12 @@ const Homepage = () => {
           <Weeklygainers />
         </Col>
       </Col>
-      <CryptoStats />
-      <HomepageTabs />
+      <Col span={12} style={{ padding: "10px" }}>
+        <CryptoStats />
+      </Col>
+      <Col style={{ padding: "10px" }}>
+        <HomepageTabs />
+      </Col>
     </>
   );
 };

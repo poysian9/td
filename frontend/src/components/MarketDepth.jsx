@@ -111,14 +111,17 @@ const MarketDepth = ({ coinid }) => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={marketDepth}
-      scroll={{
-        x: 600,
-      }}
-      size={"middle"}
-    />
+    <div className="rounded-table-container">
+      <Table
+        columns={columns}
+        dataSource={marketDepth}
+        scroll={{
+          x: 600,
+        }}
+        size={"middle"}
+        className="custom-table"
+      />
+    </div>
   );
 };
 

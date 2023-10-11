@@ -267,7 +267,7 @@ const TopTen = () => {
   ];
 
   return (
-    <>
+    <div className="rounded-table-container">
       <Table
         className="custom-table"
         columns={columns}
@@ -277,7 +277,7 @@ const TopTen = () => {
           x: 1300,
         }}
       />
-    </>
+    </div>
   );
 };
 
