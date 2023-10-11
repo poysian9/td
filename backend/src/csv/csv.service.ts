@@ -54,7 +54,8 @@ export class CsvService {
   }
 
   async uploadCSV() {
-    const rows: CSVDto[] = this.readCSV('./src/csv/DatabaseCSV.csv', [
+    const rows: CSVDto[] = this.readCSV('./src/csv/DatabaseCSV.csv', 
+    [
       'name',
       'ticker',
       'nomicsid',

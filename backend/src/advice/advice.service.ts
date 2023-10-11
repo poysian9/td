@@ -47,8 +47,7 @@ export class AdviceService {
   }
 
   async uploadCSV() {
-    const rows: adviceDto[] = this.readCSV(
-      '/Users/ren/developed/trader-asset-database/backend/src/advice/ResearchMatrix.csv',
+    const rows: adviceDto[] = this.readCSV('./src/advice/ResearchMatrix.csv',
       [
         'Market_or_Asset',
         'Specificity',
@@ -59,17 +58,12 @@ export class AdviceService {
         'Risk_Mitigation_Trade_Recommendations',
         'General_Advice_RG244',
         'Personal_Advice_RG244',
-      ],
-    );
+      ]);
 
     const formatted: adviceCSV[] = this.formatCSV(rows);
 
-    // return this.create(formatted);
-    return this.upsert(formatted);
-  }
-
-  async create(docs: adviceCSV[]) {
-    return await this.cryptoModel.insertMany(docs);
+    await this.upsert(formatted);
+    return formatted;
   }
 
   async upsert(docs: adviceCSV[]) {
