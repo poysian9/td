@@ -32,8 +32,7 @@ const MarketDepth = ({ coinid }) => {
       title: "Exchange",
       dataIndex: "exchange",
       key: "exchange",
-
-      width: 8,
+      className: "spread-column",
     },
 
     {
@@ -49,20 +48,20 @@ const MarketDepth = ({ coinid }) => {
           )}
         </p>
       ),
-      width: 10,
+      className: "spread-column",
     },
     {
       title: "Spread (BPS)",
       dataIndex: "spread",
       key: "spread",
-      width: 10,
+      className: "spread-column",
       render: (text) => (text * 100).toFixed(1),
     },
     {
       title: "+2% Depth",
       dataIndex: "cost_to_move_up_usd",
       key: "cost_to_move_up_usd",
-      width: 8,
+      className: "spread-column",
       render: (text) => (
         <>
           $
@@ -79,7 +78,7 @@ const MarketDepth = ({ coinid }) => {
       title: "-2% Depth",
       dataIndex: "cost_to_move_down_usd",
       key: "cost_to_move_down_usd",
-      width: 8,
+      className: "spread-column",
       render: (text) => (
         <>
           $
@@ -95,7 +94,7 @@ const MarketDepth = ({ coinid }) => {
       title: "24hr Volume",
       dataIndex: "volume",
       key: "24hr Volume",
-      width: 25,
+      className: "spread-column",
       render: (text) => (
         <>
           $
@@ -118,6 +117,7 @@ const MarketDepth = ({ coinid }) => {
       scroll={{
         x: 600,
       }}
+      size={"middle"}
     />
   );
 };

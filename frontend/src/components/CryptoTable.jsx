@@ -554,6 +554,7 @@ const CryptoTable = () => {
         </div>
       </div>
       <Table
+        className="custom-table"
         pagination={{ defaultPageSize: 100, position: [top, bottom] }}
         columns={columns}
         dataSource={datalist}

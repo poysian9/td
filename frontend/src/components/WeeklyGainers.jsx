@@ -38,8 +38,7 @@ const Weeklygainers = () => {
       title: "#",
       dataIndex: "rank",
       key: "Rank1",
-      width: 67,
-
+      className: "spread-column",
       render(text) {
         return text !== undefined
           ? {
@@ -66,7 +65,7 @@ const Weeklygainers = () => {
           {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),
-      width: 300,
+      className: "spread-column",
     },
     {
       title: "Price",
@@ -87,7 +86,7 @@ const Weeklygainers = () => {
               })}{" "}
         </>
       ),
-      width: 140,
+      className: "spread-column",
     },
     {
       title: "7d",
@@ -117,7 +116,7 @@ const Weeklygainers = () => {
               children: <div>Null%</div>,
             };
       },
-      width: 101,
+      className: "spread-column",
     },
 
     {
@@ -143,7 +142,7 @@ const Weeklygainers = () => {
               children: <div>Null</div>,
             };
       },
-      width: 160,
+      className: "spread-column",
     },
   ];
 
@@ -158,7 +157,7 @@ const Weeklygainers = () => {
           columns={columns}
           dataSource={activeCryptoData.slice(0, 5)}
           scroll={{
-            x: 50,
+            x: 800,
           }}
         />
       </div>

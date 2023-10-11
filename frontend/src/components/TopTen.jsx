@@ -28,15 +28,12 @@ const TopTen = () => {
 
   if (loading) return <Loader />;
 
-  // const data = assets.slice(0, 10);
-
   const columns = [
     {
       title: "#",
       dataIndex: "rank",
       key: "Rank3",
-      width: 50,
-
+      className: "spread-column",
       render(text) {
         return text !== undefined
           ? {
@@ -47,7 +44,7 @@ const TopTen = () => {
             };
       },
       defaultSortOrder: "ascend",
-      // sorter: (a, b) => a.rank - b.rank,
+      sorter: (a, b) => a.rank - b.rank,
     },
 
     {
@@ -60,7 +57,7 @@ const TopTen = () => {
           {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),
-      width: 300,
+      className: "spread-column",
     },
     {
       title: "Price",
@@ -81,7 +78,7 @@ const TopTen = () => {
               })}{" "}
         </>
       ),
-      width: 140,
+      className: "spread-column",
     },
     {
       title: "1h",
@@ -111,7 +108,7 @@ const TopTen = () => {
               children: <div>Null%</div>,
             };
       },
-      width: 101,
+      className: "spread-column",
       sorter: (a, b) => {
         const priceChangeA = a?.price_change_percentage_1h ?? 0;
         const priceChangeB = b?.price_change_percentage_1h ?? 0;
@@ -147,7 +144,7 @@ const TopTen = () => {
               children: <div>Null%</div>,
             };
       },
-      width: 101,
+      className: "spread-column",
       sorter: (a, b) => {
         const priceChangeA = a?.price_change_percentage_24h ?? 0;
         const priceChangeB = b?.price_change_percentage_24h ?? 0;
@@ -182,7 +179,7 @@ const TopTen = () => {
               children: <div>Null%</div>,
             };
       },
-      width: 101,
+      className: "spread-column",
       sorter: (a, b) => {
         const priceChangeA = a?.price_change_percentage_7d ?? 0;
         const priceChangeB = b?.price_change_percentage_7d ?? 0;
@@ -201,20 +198,20 @@ const TopTen = () => {
           <div>Sell Only</div>
         );
       },
-      width: 100,
+      className: "spread-column",
     },
     {
       title: "Primary Sector",
       dataIndex: "coindata",
       key: "primarysectors3",
-      width: 100,
+      className: "spread-column",
       render: (text) => <>{text[0]?.primarysector}</>,
     },
     {
       title: "Secondary Sector",
       dataIndex: "coindata",
       key: "secondarysectors3",
-      width: 100,
+      className: "spread-column",
       render: (text) => <>{text[0]?.secondarysector}</>,
     },
 
@@ -240,7 +237,7 @@ const TopTen = () => {
               children: <div>Null</div>,
             };
       },
-      width: 160,
+      className: "spread-column",
       sorter: {
         compare: (a, b) => a.market_cap - b.market_cap,
       },
@@ -259,7 +256,7 @@ const TopTen = () => {
           })}
         </>
       ),
-      width: 160,
+      className: "spread-column",
       sorter: (a, b) => {
         const volumeChangeA = a?.volume_24h ?? 0;
         const volumeChangeB = b?.volume_24h ?? 0;
@@ -272,6 +269,7 @@ const TopTen = () => {
   return (
     <>
       <Table
+        className="custom-table"
         columns={columns}
         dataSource={assets}
         pagination={{ pageSize: 10 }}
