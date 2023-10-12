@@ -11,22 +11,18 @@ const openInNewTab = (url) => {
 const Explorers = () => {
   return (
     <Col className="explorers-container">
-      <Col className="explorers-heading-container">
-        <Row style={{ fontSize: "1px" }}>
-          {EXPLORERS.map((explorer) => (
-            <Col xs={24} sm={12} md={9} lg={6} xl={3} key={explorer.name}>
-                <Button
-                  onClick={() => openInNewTab(explorer.url)}
-                  shape="round"
-                  block
-                  style={{ whiteSpace: 'normal' }}
-                >
-                  {explorer.name}
-                </Button>
-            </Col>
-          ))}
-        </Row>
-      </Col>
+      <Row className="explorers-heading-container">
+        {EXPLORERS.map((explorer) => (
+          <Button
+            key={explorer.name}
+            onClick={() => openInNewTab(explorer.url)}
+            shape="round"
+            style={{ whiteSpace: 'normal', margin: '4px' }}
+          >
+            {explorer.name}
+          </Button>
+        ))}
+      </Row>
     </Col>
   );
 };

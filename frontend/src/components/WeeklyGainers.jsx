@@ -158,7 +158,7 @@ const Weeklygainers = () => {
           columns={columns}
           dataSource={activeCryptoData.slice(0, 5)}
           scroll={{
-            x: 800,
+            x: 600,
           }}
         />
       </div>

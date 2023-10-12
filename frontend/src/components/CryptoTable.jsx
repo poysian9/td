@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Col, Input, Button, Table } from "antd";
+import { Col, Input, Button, Table } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
 import Loader from "./Loader";
 import { useGetCoinsQuery } from "../services/nomicsApi";
-import { BreadCrumbs, CryptoMCap, Explorers } from "../components";
 
-const { Title } = Typography;
 
 const CryptoTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -511,15 +509,6 @@ const CryptoTable = () => {
 
   return datalist ? (
     <Col className="activeassets-container">
-      <Col className="active-heading-container">
-        <BreadCrumbs />
-        <Title level={1} className="active-heading">
-          C&B Cryptocurrencies by Market Cap
-        </Title>
-        <CryptoMCap />
-      </Col>
-
-      <Explorers />
       <div style={{ display: "flex", marginTop: "20px", marginBottom: "20px" }}>
         <div className="search-crypto">
           <Input
@@ -539,18 +528,6 @@ const CryptoTable = () => {
           >
             Clear Filters
           </Button>
-        </div>
-        <div>
-          {/* <Select //Set up a select box that will be used to change time period of the chart
-            defaultValue="USD"
-            className="select-currency"
-            placeholder="Select Currency"
-            onChange={(value) => setCurrency(value)}
-          >
-            {fiats.map((fiat) => (
-              <Option key={fiat}>{fiat}</Option>
-            ))}
-          </Select> */}
         </div>
       </div>
       <div className="rounded-table-container">

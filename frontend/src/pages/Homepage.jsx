@@ -32,7 +32,7 @@ const Homepage = () => {
           <Weeklygainers />
         </Col>
       </Col>
-      <Col span={12} style={{ padding: "10px" }}>
+      <Col style={{ padding: "10px" }}>
         <CryptoStats />
       </Col>
       <Col style={{ padding: "10px" }}>

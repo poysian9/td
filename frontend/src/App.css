@@ -162,17 +162,15 @@ a:hover {
 .explorers-heading-container {
   display: flex;
   justify-content: center;
-  align-items: left;
-  flex-direction: column;
+  flex-wrap: wrap;
   padding-top: 2px;
   padding-bottom: 2px;
-  width: 100%;
 }
 
 .coin-heading-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -373,6 +371,12 @@ a:hover {
 .coin-stats {
   font-size: 1rem;
   padding: 4px;
+}
+
+.coin-stats-value {
+  font-size: 1rem;
+  padding: 4px;
+  text-align: right;
 }
 
 .coin-stats-name {
@@ -601,7 +605,7 @@ a:hover {
 }
 .status-reasoning-container {
   flex-direction: column;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
 }
 
 .research-container {
@@ -632,7 +636,7 @@ a:hover {
 }
 
 .coin-status-container {
-  margin: 50px;
+  /* margin: 50px; */
   align-items: center;
 }
 
@@ -649,7 +653,11 @@ a:hover {
 .chart-container {
   padding-top: 10px;
   padding-bottom: 10px;
-  width: 80%;
+}
+
+.chart-container-center{
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .movers {

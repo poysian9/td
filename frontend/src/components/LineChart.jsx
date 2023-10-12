@@ -62,9 +62,9 @@ const LineChart = ({ coinHistory, currentPrice, changeData }) => {
   );
 
   return coinHistory ? (
-    <>
-      <Line data={data} options={options} />
-    </>
+    
+    <Line data={data} options={options} />
+
   ) : (
     ""
   );
