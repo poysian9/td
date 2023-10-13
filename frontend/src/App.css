@@ -704,7 +704,19 @@ a:hover {
 }
 
 .rounded-table-container {
-  border-radius: 10px; /* Adjust the border radius to control the amount of rounding */
-  overflow: hidden; /* Ensure content inside the container doesn't overflow */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for a lifted effect */
+  border-radius: 10px; 
+  overflow: hidden; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.rounded-tablez {
+  border-radius: 8px; 
+  overflow: hidden; 
+}
+
+.small-font-ellipsis {
+  font-size: 10px;
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
 }

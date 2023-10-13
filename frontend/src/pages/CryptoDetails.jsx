@@ -91,7 +91,7 @@ const CryptoDetails = () => {
     <Col>
       {/* // {Crypto Profile Container} */}
       <Row>
-        <Col className="coin-status-container" span={10} style={{ paddingLeft: 20 }}>
+        <Col className="coin-status-container" span={11} style={{ paddingLeft: 20 }}>
           <Alerts assetData={assetData} />
           <Row className="general-container">
             <BreadCrumbs />
@@ -102,7 +102,7 @@ const CryptoDetails = () => {
             messariData={messariData}  
           />
         </Col>
-        <Col className="coin-heading-container" span={10} offset={4} style={{ marginTop: 60 }}>
+        <Col className="coin-heading-container" span={11} offset={2} style={{ marginTop: 60 }}>
           <KeyMetrics
             cryptoDetails={cryptoDetails}
             assetData={assetData}

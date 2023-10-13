@@ -11,16 +11,16 @@ const CryptoMCap = () => {
   const [, setError] = useState(null);
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_URL + `/cryptodata/global`)
+    fetch(process.env.REACT_APP_API_URL + `/cryptodata/readGlobal`)
       .then((res) => res.json())
       .then((marketCap) => {
         setmarketCap(marketCap);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [marketCap]);
   if (loading) return <Loader />;
-
+  
   return (
     <>
       <Col className="cryptomarketcap">

@@ -102,7 +102,7 @@ const CryptoInfo = ({cryptoDetails, assetData, messariData}) => {
                             Profile
                         </Title>
 
-                        <Tabs defaultActiveKey="1" style={{maxHeight: '35r0px', overflowY: 'auto'}}>
+                        <Tabs defaultActiveKey="1" style={{maxHeight: '350px', overflowY: 'auto'}}>
                             <Tabs.TabPane tab="Overview" key="1">
                                 {messariData && messariData.project_details 
                                 ? (

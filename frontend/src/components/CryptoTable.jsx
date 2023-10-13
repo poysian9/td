@@ -33,7 +33,7 @@ const CryptoTable = () => {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [cryptosList]);
+  }, []);
   
   useEffect(() => {
     if (!cryptosList) return;
@@ -294,7 +294,10 @@ const CryptoTable = () => {
         // Replace underscores with spaces for rendering
         const displayedText = text === "null" ? "-" : text; // Render "-" for "null" value
     
-        return displayedText;
+        const className = text.length > 15 ? 'small-font-ellipsis' : '';
+
+        return <span className={className}>{displayedText}</span>;
+    
       },
     },
     {
@@ -455,7 +458,9 @@ const CryptoTable = () => {
         // Replace underscores with spaces for rendering
         const displayedText = text === "null" ? "-" : text; // Render "-" for "null" value
     
-        return displayedText;
+        const className = text.length > 15 ? 'small-font-ellipsis' : '';
+
+        return <span className={className}>{displayedText}</span>;
       }
     },
     {
@@ -530,7 +535,7 @@ const CryptoTable = () => {
           </Button>
         </div>
       </div>
-      <div className="rounded-table-container">
+      <div className="rounded-tablez">
         <Table
           className="custom-table"
           pagination={{ defaultPageSize: 100, position: [top, bottom] }}

@@ -262,7 +262,7 @@ const TopTen = () => {
   ];
 
   return (
-    <div className="rounded-table-container">
+    <div className="rounded-tablez">
       <Table
         className="custom-table"
         columns={columns}

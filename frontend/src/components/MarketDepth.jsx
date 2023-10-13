@@ -111,7 +111,7 @@ const MarketDepth = ({ coinid }) => {
   ];
 
   return (
-    <div className="rounded-table-container">
+    <div className="rounded-tablez">
       <Table
         columns={columns}
         dataSource={marketDepth}
