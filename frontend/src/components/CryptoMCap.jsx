@@ -18,7 +18,8 @@ const CryptoMCap = () => {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [marketCap]);
+  }, []);
+
   if (loading) return <Loader />;
   
   return (

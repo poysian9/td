@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { NomicsapiService } from './nomicsapi.service';
 
@@ -36,10 +36,10 @@ export class NomicsapiController {
     return this.nomicsapiService.get1dHistory({ coinid });
   }
 
-  @Get('global')
+  @Post('global')
   @ApiTags('Global Data')
   getGlobal() {
-    return this.nomicsapiService.getGlobal();
+    return this.nomicsapiService.updateGlobal();
   }
   
   @Get('readGlobal')
