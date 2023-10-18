@@ -14,7 +14,7 @@ const Navbar = () => {
               <img src={logo} alt="logo" height={60} width={230}/>
             </a>       
             <a href="/" style={{ position: "relative", top: "-20px", overflow: "hidden" }}>
-              <Typography.Title level={5} style={{ color: "white", textAlign: "center", paddingLeft: "20px", width: "215px"}}>
+              <Typography.Title level={5} style={{ color: "white", textAlign: "center", paddingLeft: "20px", width: "210px", fontFamily: "Roobert Light", textDecoration: "underline"}}>
                 Asset Database
               </Typography.Title>
             </a>    

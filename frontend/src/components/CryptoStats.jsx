@@ -13,7 +13,7 @@ const CryptoStats = () => {
 
   return (
     <Col style={{paddingTop: "20px"}}>
-      <Title level={2} className="semibold-font">
+      <Title level={2} className="semibold-font" style={{color: "#002035"}}>
         Markets
       </Title>
       <CryptoMCap />

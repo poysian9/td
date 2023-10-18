@@ -10,7 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-const LineChart = ({ coinHistory, currentPrice, changeData }) => {
+const LineChart = ({ coinHistory, changeData }) => {
   // Check if coinHistory is defined and has a 'prices' property
   if (!coinHistory || !coinHistory.prices) {
     return null; // Return null or handle this case as needed
@@ -28,8 +28,8 @@ const LineChart = ({ coinHistory, currentPrice, changeData }) => {
         label: "Price In USD",
         data: coinPrice,
         fill: false,
-        backgroundColor: "#fc4c4c",
-        borderColor: "#fc4c4c",
+        backgroundColor: "#079363",
+        borderColor: "#079363",
       },
     ],
   };

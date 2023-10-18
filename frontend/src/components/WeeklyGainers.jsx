@@ -55,7 +55,7 @@ const Weeklygainers = () => {
       dataIndex: "name",
       key: "Coin1",
       render: (text, record, index) => (
-        <a href={`/cryptocurrencies/${record.id}`}>
+        <a href={`/cryptocurrencies/${record.id}`} style={{color: "black" }}>
           <img
             src={record.logo_url ? record.logo_url : defaultImg}
             alt="icons"
@@ -63,7 +63,8 @@ const Weeklygainers = () => {
             width={28}
             style={{ marginRight: "8px" }}
           />{" "}
-          {text} ({record.symbol.toUpperCase()}){" "}
+        <span className="sohne-buch" style={{fontSize: "15px"}}>{text}</span>{" "}
+        <span className="sohne-leicht" style={{fontSize: "11px", paddingLeft: "3px", color: "gray"}}>{record.symbol.toUpperCase()}</span>{" "}
         </a>
       ),
       className: "spread-column",
@@ -97,7 +98,7 @@ const Weeklygainers = () => {
         return text !== null
           ? {
               props: {
-                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#fc4c4c" : "#079363" },
               },
               children: (
                 <div>
@@ -150,7 +151,7 @@ const Weeklygainers = () => {
   return (
     <>
       <div className="home-heading-container">
-        <Title className="semibold-font" level={2}>Weekly Gainers</Title>
+        <Title className="semibold-font" level={2} style={{color: "#002035"}}>Weekly Gainers</Title>
       </div>
       <div className="rounded-table-container">
         <Table

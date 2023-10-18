@@ -17,7 +17,14 @@ const Explorers = () => {
             key={explorer.name}
             onClick={() => openInNewTab(explorer.url)}
             shape="round"
-            style={{ whiteSpace: 'normal', paddingLeft: "20px", paddingRight: "20px", marginRight: "30px"}}
+            style={{ whiteSpace: 'normal', 
+                     paddingLeft: "20px", 
+                     paddingRight: "20px", 
+                     marginRight: "20px",
+                     "&:hover": {
+                      backgroundColor: "red",
+                    },
+                    }}
           >
             {explorer.name}
           </Button>

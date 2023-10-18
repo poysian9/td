@@ -24,7 +24,7 @@ const CryptoMCap = () => {
   
   return (
     <>
-      <Col className="light-font-size16">
+      <Col className="font-light" style={{ fontSize: "16px"}}>
         <div>
           The global cryptocurrency market cap today is $
           {marketCap.total_market_cap ? millify(marketCap.total_market_cap,{
@@ -34,7 +34,7 @@ const CryptoMCap = () => {
             <>
               <CaretDownOutlined
                 className="downsymbol"
-                style={{ color: "#E15241", lineheight: "2rem" }}
+                style={{ color: "#fc4c4c", lineheight: "2rem" }}
               />
               {prettyNum(
                 Math.abs(marketCap.market_cap_change_pct),
@@ -49,7 +49,7 @@ const CryptoMCap = () => {
             <>
               <CaretUpOutlined
                 className="upsymbol"
-                style={{ color: "#4EAF0A" }}
+                style={{ color: "#079363" }}
               />
               {prettyNum(
                 Math.abs(marketCap.market_cap_change_pct),

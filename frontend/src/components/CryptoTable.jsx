@@ -52,7 +52,7 @@ const CryptoTable = () => {
     ...a2.find((item) => item.coingeckoid === itm.id && item),
     ...itm,
   }));
-  
+  console.log(filteredInfo);
   const datalist = assets ? mergeById(cryptos, assets) : "";
   if (loading) return <Loader />;
 
@@ -64,7 +64,7 @@ const CryptoTable = () => {
       title: "#",
       dataIndex: "rank",
       key: "Rank",
-      width: 67,
+      width: 50,
       render: (text) => (
         <div>{text !== undefined ? text : "Null"}</div>
       ),
@@ -84,13 +84,12 @@ const CryptoTable = () => {
             alt="icons"
             height={28}
             width={28}
-            style={{ marginRight: "8px" }}
+            style={{ marginRight: "8px", overflow: "hidden" }}
           />{" "}
-        <span className="sohne-buch" style={{fontSize: "16px"}}>{text}</span>{" "}
+        <span className="sohne-buch" style={{fontSize: "15px"}}>{text}</span>{" "}
         <span className="sohne-leicht" style={{fontSize: "11px", paddingLeft: "3px", color: "gray"}}>{record.symbol.toUpperCase()}</span>{" "}
         </a>
       ),
-      width: 500,
     },
     {
       title: "Price",
@@ -111,13 +110,11 @@ const CryptoTable = () => {
               })}{" "}
         </>
       ),
-      width: 140,
     },
     {
       title: "1h",
       dataIndex: "price_change_percentage_1h",
       key: "percentchange1h",
-      width: 101,
       sorter: (c, d) => {
         const priceChangeA = c?.price_change_percentage_1h ?? 0;
         const priceChangeB = d?.price_change_percentage_1h ?? 0;
@@ -129,7 +126,7 @@ const CryptoTable = () => {
         return text !== null
           ? {
               props: {
-                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#fc4c4c" : "#079363" },
               },
               children: (
                 <div>
@@ -154,7 +151,6 @@ const CryptoTable = () => {
       title: "24h",
       dataIndex: "price_change_percentage_24h",
       key: "percentchange24h",
-      width: 101,
       sorter: (a, b) => {
         const priceChangeA = a?.price_change_percentage_24h ?? 0;
         const priceChangeB = b?.price_change_percentage_24h ?? 0;
@@ -166,7 +162,7 @@ const CryptoTable = () => {
         return text !== null
           ? {
               props: {
-                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#fc4c4c" : "#079363" },
               },
               children: (
                 <div>
@@ -191,7 +187,6 @@ const CryptoTable = () => {
       title: "7d",
       dataIndex: "price_change_percentage_7d",
       key: "percentchange7d",
-      width: 101,
       sorter: (a, b) => {
         const priceChangeA = a?.price_change_percentage_7d ?? 0;
         const priceChangeB = b?.price_change_percentage_7d ?? 0;
@@ -203,7 +198,7 @@ const CryptoTable = () => {
         return text !== null
           ? {
               props: {
-                style: { color: text < 0 ? "#e15241" : "#4eaf0a" },
+                style: { color: text < 0 ? "#fc4c4c" : "#079363" },
               },
               children: (
                 <div>
@@ -228,7 +223,6 @@ const CryptoTable = () => {
       title: "Status",
       dataIndex: "statuses",
       key: "statuses",
-      width: 100,
       filters: [
         {
           text: "Active",
@@ -258,7 +252,6 @@ const CryptoTable = () => {
       title: "Primary Sector",
       dataIndex: "primarysector",
       key: "primarysector",
-      width: 100,
       filters: [
         {
           text: "Computing",
@@ -306,7 +299,6 @@ const CryptoTable = () => {
       title: "Secondary Sector",
       dataIndex: "secondarysector",
       key: "secondarysector",
-      width: 100,
       filters: [
         {
           text: "Active DAO",
@@ -487,7 +479,6 @@ const CryptoTable = () => {
               children: <div>Null</div>,
             };
       },
-      width: 160,
       sorter: {
         compare: (a, b) => a.market_cap - b.market_cap,
       },
@@ -506,7 +497,6 @@ const CryptoTable = () => {
           })}
         </>
       ),
-      width: 160,
       sorter: {
         compare: (a, b) => a.volume_24h - b.volume_24h,
         multiple: 2, // Allow multiple columns to be sorted simultaneously
@@ -545,7 +535,7 @@ const CryptoTable = () => {
           dataSource={datalist}
           onChange={handleChange}
           scroll={{
-            x: 600,
+            x: 1400,
           }}
           size={"small"}
           style={{ padding: "10px" }}      

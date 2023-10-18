@@ -12,10 +12,10 @@ const { Title } = Typography;
 
 const Homepage = () => {
   return (
-    <Col style={{ marginLeft: "30px", marginRight: "30px", marginTop: "20px" }}>
+    <Col style={{ marginLeft: "40px", marginRight: "40px", marginTop: "20px" }}>
       <Col style={{ padding: "10px" }}>
         <Col className="explorers-value-heading">
-          <Title className="semibold-font" level={2}>Explorers</Title>
+          <Title className="semibold-font" level={2} style={{color: "#002035"}}>Explorers</Title>
         </Col>
 
         <Col className="explorers">
@@ -24,10 +24,10 @@ const Homepage = () => {
       </Col>
 
       <Col className="movers">
-        <Col span={12} style={{ padding: "10px" }}>
+        <Col span={12} style={{ paddingLeft: "10px", paddingRight: "10px"}}>
           <Dailygainers />
         </Col>
-        <Col span={12} style={{ padding: "10px" }}>
+        <Col span={12} style={{ paddingLeft: "10px", paddingRight: "10px"}}>
           <Weeklygainers />
         </Col>
       </Col>

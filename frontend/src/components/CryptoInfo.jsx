@@ -12,18 +12,19 @@ const CryptoInfo = ({cryptoDetails, assetData, messariData}) => {
     return (
         <Col className="coin-heading-container" span={24}>
             <Col className="rank-subheader">Rank #{cryptoDetails.rank}</Col>
-                <Col className="general-container">
-                    <Title level={3} className="coin-name">
+                <Col>
+                    <Title level={3} className="coin-name" >
                         <img
-                        src={
-                            cryptoDetails.logo_url ? cryptoDetails.logo_url : defaultImg
-                        }
-                        alt="icons"
-                        height={28}
-                        width={28}
-                        />
-                        {"  "}
-                        {cryptoDetails.name} ({cryptoDetails.symbol.toUpperCase()})
+                            src={
+                                cryptoDetails.logo_url ? cryptoDetails.logo_url : defaultImg
+                                }
+                            alt="icons"
+                            height={30}
+                            width={30}
+                            style={{ marginRight: "6px" }}
+                        />{"  "}
+                        <span className="sohne-halbfett">{cryptoDetails.name}</span>{" "}
+                        <span className="sohne-leicht" style={{ paddingLeft: "6px"}}>{cryptoDetails.symbol.toUpperCase()}</span>{" "}
                     </Title>
                 </Col>
             <Row className="coin-price">
@@ -46,9 +47,9 @@ const CryptoInfo = ({cryptoDetails, assetData, messariData}) => {
                         <>
                         <CaretDownOutlined
                             className="downsymbol"
-                            style={{ color: "#E15241", lineheight: "2rem" }}
+                            style={{ color: "#fc4c4c", lineheight: "2rem" }}
                         />
-                        <div style={{ color: "#E15241" }}>
+                        <div style={{ color: "#fc4c4c" }}>
                             {prettyNum(
                             Math.abs(cryptoDetails.price_change_percentage_24h),
                             {
@@ -64,9 +65,9 @@ const CryptoInfo = ({cryptoDetails, assetData, messariData}) => {
                         <>
                         <CaretUpOutlined
                             className="upsymbol"
-                            style={{ color: "#4EAF0A" }}
+                            style={{ color: "#079363" }}
                         />
-                        <div style={{ color: "#4EAF0A" }}>
+                        <div style={{ color: "#079363" }}>
                             {prettyNum(
                             Math.abs(cryptoDetails.price_change_percentage_24h),
                             {
@@ -95,10 +96,10 @@ const CryptoInfo = ({cryptoDetails, assetData, messariData}) => {
             </Col>
 
             {/* // {Profile} */}
-            <Col className="general-container" >
+            <Col>
                 <Row>
                     <Col className="profile-container" style={{ paddingTop: 0 }}>
-                        <Title level={3} style={{ marginTop: 0 }} className="coin-profile-heading">
+                        <Title level={2} className="semibold-font" style={{color: "#002035",paddingTop: "10px"}}>
                             Profile
                         </Title>
 

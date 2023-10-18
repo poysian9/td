@@ -88,7 +88,7 @@ const CryptoDetails = () => {
 
   return cryptoDetails && assetData ? (
     // Overall Container
-    <Col>
+    <Col style={{paddingLeft: "40px", paddingRight: "40px"}}>
       {/* // {Crypto Profile Container} */}
       <Row>
         <Col className="coin-status-container" span={11} style={{ paddingLeft: 20 }}>
@@ -102,7 +102,7 @@ const CryptoDetails = () => {
             messariData={messariData}  
           />
         </Col>
-        <Col className="coin-heading-container" span={11} offset={2} style={{ marginTop: 60 }}>
+        <Col className="coin-heading-container" span={11} offset={2} style={{ marginTop: 80 }}>
           <KeyMetrics
             cryptoDetails={cryptoDetails}
             assetData={assetData}
@@ -112,13 +112,12 @@ const CryptoDetails = () => {
       </Row>
 
       {/* // {Crypto Chart Container} */}
-      <Col className="chart-container-center">
-        <Col className="chart-container">
-          <Col>
-            <Title level={3} className="coin-profile-heading" style={{ marginTop: 'auto' }}>
+      <Col className="chart-padding-center">
+          <Col className="chart-header">
+            <Title level={2} className="coin-profile-heading" style={{ marginTop: 'auto', color: "#002035" }}>
               Price Chart
             </Title>
-            <Row className="general-container">
+            <Row>
               <Select //Set up a select box that will be used to change time period of the chart
                 defaultValue="24h"
                 className="select-timeperiod"
@@ -131,30 +130,21 @@ const CryptoDetails = () => {
               </Select>
             </Row>
           </Col>
-          <Col className="chart-container-center">
-            <LineChart
-              coinHistory={coinHistory ? coinHistory : ""}
-              currentPrice={
-                cryptoDetails.price < 1
-                  ? prettyNum(cryptoDetails.price, {
-                      precision: 6,
-                      precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
-                    })
-                  : prettyNum(cryptoDetails.price, {
-                      precision: 1,
-                      precisionSetting: PRECISION_SETTING.REDUCE_SIGNIFICANT,
-                    })
-              }
-              changeData={changeTime(timePeriod)}
-            />
+          <Col className="chart-container">
+            <Col className="chart-container-center">
+              <LineChart
+                coinHistory={coinHistory ? coinHistory : ""}
+                changeData={changeTime(timePeriod)}
+              />
           </Col>
+
         </Col>
         {/* Market Depth */}
         <Col className="market-depth">
-          <Title level={3} className="coin-details-heading">
+          <Title level={2} className="semibold-font" style={{ color: "#002035" }}>
             Market Depth
           </Title>
-          <Col className="chart-container-center">
+          <Col className="chart-padding-center">
             {assetData.coingeckoid ? (
               <MarketDepth coinid={assetData.coingeckoid} />
             ) : (

@@ -160,10 +160,11 @@ a:hover {
 .explorers-container {
   align-items: left;
   width: 100%;
+  overflow: hidden;
 }
 .explorers-heading-container {
   display: flex;
-  /* justify-content: space-evenly; */
+  justify-content: left;
   flex-wrap: wrap;
 }
 
@@ -261,10 +262,13 @@ a:hover {
   box-sizing: border-box;
 }
 .coin-heading-container .coin-name {
-  font-weight: 650;
-  font-size: 23px;
-  line-height: 1rem;
+  /* font-weight: 650; */
+  /* font-size: 23px; */
+  line-height: 3rem;
   color: #002035;
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
 }
 
 .coin-heading-container .coin-price {
@@ -275,7 +279,7 @@ a:hover {
 }
 .coin-heading-container .coin-price .price {
   font-weight: 700;
-  font-size: 32px;
+  font-size: 30px;
   line-height: 1.8rem;
   color: #002035;
   margin-top: 0em !important;
@@ -344,33 +348,27 @@ a:hover {
 
 .coin-details-heading {
   font-weight: 700 !important;
-  margin-top: 20px !important;
-  color: var(--text-primary) !important;
+  margin-top: 25px !important;
 }
 
 .coin-profile-heading {
   font-weight: 700 !important;
   margin-top: auto !important;
-  color: var(--text-primary) !important;
 }
 
 .explorers-heading {
   font-weight: 500 !important;
   margin-top: 10px !important;
-  color: var(--text-primary) !important;
 }
 
 .explorers {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  font-size: 1rem;
-  opacity: 0.9;
 }
 
 .coin-stats {
   font-size: 1rem;
-  padding: 4px;
+  /* padding: 4px; */
 }
 
 .coin-stats-value {
@@ -625,8 +623,8 @@ a:hover {
   flex-direction: column;
   border-bottom: 1px solid var(--border);
   padding-top: 50px;
-  padding-bottom: 10px;
-  gap: 10px;
+  /* padding-bottom: 10px; */
+  /* gap: 10px; */
 }
 
 .market-depth {
@@ -656,17 +654,31 @@ a:hover {
 .chart-container {
   padding-top: 10px;
   padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.chart-container-center{
+.chart-padding-center{
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.chart-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.chart-container-center {
+  width: 85%;
+  text-align: center;
 }
 
 .movers {
   display: flex;
   flex-direction: row;
-  padding-top: 10px;
 }
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: #002035 !important;
@@ -701,12 +713,15 @@ a:hover {
 
 .spread-column {
   width: auto;
-  text-align: left;
-  justify-self: right;
 }
+
+
 
 .custom-table .ant-table-tbody > tr > td {
   height: 60px;
+  overflow-x: hidden;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .rounded-table-container {
@@ -723,8 +738,6 @@ a:hover {
 .small-font-ellipsis {
   font-size: 13px;
   white-space: nowrap;
-  /* overflow: hidden;
-  text-overflow: ellipsis; */
 }
 
 @font-face {
@@ -759,7 +772,6 @@ a:hover {
 
 .semibold-font {
   font-family: "Roobert SemiBold";
-  /* text-decoration: underline; */
 }
 
 .regular-font {
@@ -768,11 +780,6 @@ a:hover {
 
 .light-font {
   font-family: "Roobert Regular";
-}
-
-.light-font-size16 {
-  font-family: "Roobert Light";
-  font-size: 16px;
 }
 
 @font-face {
@@ -785,10 +792,27 @@ a:hover {
   src: local("Söhne-Leicht"), url("./fonts/Söhne-Leicht.otf") format("opentype");
 }
 
+@font-face {
+  font-family: "Sohne Halbfett";
+  src: local("Söhne-Halbfett"), url("./fonts/Söhne-Halbfett.otf") format("opentype");
+}
+
 .sohne-buch {
   font-family: "Sohne Buch";
 }
 
 .sohne-leicht {
   font-family: "Sohne Leicht";
+}
+
+.sohne-halbfett {
+  font-family: "Sohne Halbfett";
+}
+
+.ant-typography a {
+  color: #fc4c4c;
+}
+
+.ant-list-item:nth-child(even) {
+  background-color: #b3b0b0; /* Your highlight color here */
 }

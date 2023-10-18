@@ -182,20 +182,20 @@ const KeyMetrics = ({ cryptoDetails, assetData, messariData }) => {
 
     return (
         <Col>
-            <Title level={3} className="coin-details-heading">
+            <Title level={2} className="semibold-font" style={{color: "#002035"}}>
                 Key Metrics
             </Title>
             <Col className="key-metrics-container">
-                <List>
+                <List >
                 {stats.map(({ icon, title, value }) => (
                     <Row>
-                    <Col className="coin-stats" span={8}>
-                        <Text key="icons">{icon}</Text>
-                        <Text key="titles">{title}</Text>
-                    </Col>
-                    <Col className="coin-stats-value" span={8} offset={4}>
-                        <Text className="stats">{value}</Text>
-                    </Col>
+                        <Col className="semibold-font" span={8} style={{ fontSize: "18px", padding: "3px"}}>
+                            <Text key="icons">{icon}</Text>
+                            <Text key="titles">{title}</Text>
+                        </Col>
+                        <Col className="light-font" span={8} offset={4} style={{ fontSize: "18px", textAlign: "right", padding: "3px"}}>
+                            <Text>{value}</Text>
+                        </Col>
                     </Row>
                 ))}
                 </List>
