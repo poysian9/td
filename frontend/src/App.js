@@ -2,9 +2,7 @@
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import { Layout, Typography, Space, Row } from "antd";
-
 import { Navbar } from "./components";
-
 import {
   Homepage,
   Cryptocurrencies,
@@ -12,9 +10,14 @@ import {
   Research,
   WatchList,
 } from "./pages";
-
-import "./App.css";
 import ErrorBoundery from "./components/ErrorBoundery";
+import "./App.css";
+import "./fonts/Roobert-Bold.ttf";
+import "./fonts/Roobert-Medium.ttf";
+import "./fonts/Roobert-Regular.ttf";
+import "./fonts/Roobert-Light.ttf";
+import "./fonts/Roobert-Heavy.ttf";
+import "./fonts/Roobert-SemiBold.ttf";
 
 const App = () => {
   return (
@@ -24,7 +27,7 @@ const App = () => {
           <Row className="navbar">
             <Navbar />
           </Row>
-          <Layout>
+          <Layout style={{backgroundColor: "#f9f9f9" }}>
             <div className="routes">
               <Switch>
                 <Route exact path="/">

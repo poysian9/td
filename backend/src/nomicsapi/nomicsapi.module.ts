@@ -10,7 +10,7 @@ import { ScheduleModule } from '@nestjs/schedule';
   imports: [
     ScheduleModule.forRoot(),
     MongooseModule.forFeature([
-                               { name: GlobalData.name, schema: GlobalDataSchema }
+                               { name: GlobalData.name, schema: GlobalDataSchema },
                               ]),
     HttpModule,
   ],

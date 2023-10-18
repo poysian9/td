@@ -48,7 +48,12 @@ const TopTen = () => {
       key: "Coin3",
       render: (text, record, index) => (
         <a href={`/cryptocurrencies/${record.id}`}>
-          <img src={record.logo_url} alt="icons" height={28} width={28} />{" "}
+          <img src={record.logo_url} 
+               alt="icons" 
+               height={28} 
+               width={28} 
+               style={{ marginRight: "8px" }}
+          />{" "}
           {text} ({record.symbol.toUpperCase()}){" "}
         </a>
       ),

@@ -61,6 +61,7 @@ const Weeklygainers = () => {
             alt="icons"
             height={28}
             width={28}
+            style={{ marginRight: "8px" }}
           />{" "}
           {text} ({record.symbol.toUpperCase()}){" "}
         </a>
@@ -149,7 +150,7 @@ const Weeklygainers = () => {
   return (
     <>
       <div className="home-heading-container">
-        <Title level={2}>Weekly Gainers</Title>
+        <Title className="semibold-font" level={2}>Weekly Gainers</Title>
       </div>
       <div className="rounded-table-container">
         <Table

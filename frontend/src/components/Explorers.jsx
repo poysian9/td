@@ -11,13 +11,13 @@ const openInNewTab = (url) => {
 const Explorers = () => {
   return (
     <Col className="explorers-container">
-      <Row className="explorers-heading-container">
+      <Row className="explorers-heading-container" block span={24}>
         {EXPLORERS.map((explorer) => (
           <Button
             key={explorer.name}
             onClick={() => openInNewTab(explorer.url)}
             shape="round"
-            style={{ whiteSpace: 'normal', margin: '4px' }}
+            style={{ whiteSpace: 'normal', paddingLeft: "20px", paddingRight: "20px", marginRight: "30px"}}
           >
             {explorer.name}
           </Button>

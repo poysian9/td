@@ -19,8 +19,6 @@ a:hover {
 
 .app {
   display: flex;
-  font-family: Poppins;
-  font-weight: 400;
 }
 
 .navbar {
@@ -45,12 +43,17 @@ a:hover {
 }
 
 .logo-container {
-  background-color: #002035;
-  color: white;
+  display: flex;
+  padding-top: 10px;
+  padding-left: 100px;
+  align-items: center;
+}
+
+.menu-container {
   display: flex;
   padding: 20px;
+  padding-top: 30px;
   align-items: center;
-  width: 100%;
 }
 
 .logo {
@@ -155,16 +158,13 @@ a:hover {
 }
 
 .explorers-container {
-  margin: 2px;
-  align-items: center;
+  align-items: left;
   width: 100%;
 }
 .explorers-heading-container {
   display: flex;
-  justify-content: center;
+  /* justify-content: space-evenly; */
   flex-wrap: wrap;
-  padding-top: 2px;
-  padding-bottom: 2px;
 }
 
 .coin-heading-container {
@@ -453,6 +453,8 @@ a:hover {
 }
 .activeassets-container {
   align-items: "center";
+  margin-left: 30px;
+  margin-right: 30px;
 }
 .acitve-heading {
   align-items: "center";
@@ -558,7 +560,7 @@ a:hover {
   margin: 0px 10px !important;
 }
 .search-crypto {
-  margin: 0% 5%;
+  /* margin: 0% 5%; */
   width: 100%;
 }
 .crypto-card-container {
@@ -575,6 +577,7 @@ a:hover {
 }
 .boxfortable {
   display: flex;
+  padding-left: 10px;
 }
 .select-timeperiod {
   width: 200px !important;
@@ -663,6 +666,7 @@ a:hover {
 .movers {
   display: flex;
   flex-direction: row;
+  padding-top: 10px;
 }
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: #002035 !important;
@@ -697,6 +701,8 @@ a:hover {
 
 .spread-column {
   width: auto;
+  text-align: left;
+  justify-self: right;
 }
 
 .custom-table .ant-table-tbody > tr > td {
@@ -715,8 +721,74 @@ a:hover {
 }
 
 .small-font-ellipsis {
-  font-size: 10px;
-  /* white-space: nowrap;
-  overflow: hidden;
+  font-size: 13px;
+  white-space: nowrap;
+  /* overflow: hidden;
   text-overflow: ellipsis; */
+}
+
+@font-face {
+  font-family: "Roobert Light";
+  src: local("Roobert-Light"), url("./fonts/Roobert-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roobert Regular";
+  src: local("Roobert-Regular"), url("./fonts/Roobert-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roobert Medium";
+  src: local("Roobert-Medium"), url("./fonts/Roobert-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roobert Bold";
+  src: local("Roobert-Bold"), url("./fonts/Roobert-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roobert Heavy";
+  src: local("Roobert-Heavy"), url("./fonts/Roobert-Heavy.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roobert SemiBold";
+  src: local("Roobert-SemiBold"), url("./fonts/Roobert-SemiBold.ttf") format("truetype");
+}
+
+.semibold-font {
+  font-family: "Roobert SemiBold";
+  /* text-decoration: underline; */
+}
+
+.regular-font {
+  font-family: "Roobert Regular";
+}
+
+.light-font {
+  font-family: "Roobert Regular";
+}
+
+.light-font-size16 {
+  font-family: "Roobert Light";
+  font-size: 16px;
+}
+
+@font-face {
+  font-family: "Sohne Buch";
+  src: local("Söhne-Buch"), url("./fonts/Söhne-Buch.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Sohne Leicht";
+  src: local("Söhne-Leicht"), url("./fonts/Söhne-Leicht.otf") format("opentype");
+}
+
+.sohne-buch {
+  font-family: "Sohne Buch";
+}
+
+.sohne-leicht {
+  font-family: "Sohne Leicht";
 }

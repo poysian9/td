@@ -26,7 +26,7 @@ export class NomicsapiService {
   }
 
   async getmaxHistory({ coinid }) {
-    return await this.httpService
+    return this.httpService
       .get(
         `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=max&interval=daily`,
       )
@@ -34,7 +34,7 @@ export class NomicsapiService {
   }
 
   async get1yHistory({ coinid }) {
-    return await this.httpService
+    return this.httpService
       .get(
         `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=365&interval=daily`,
       )
@@ -42,7 +42,7 @@ export class NomicsapiService {
   }
 
   async get1mHistory({ coinid }) {
-    return await this.httpService
+    return this.httpService
       .get(
         `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=30`,
       )
@@ -50,7 +50,7 @@ export class NomicsapiService {
   }
 
   async get7dHistory({ coinid }) {
-    return await this.httpService
+    return this.httpService
       .get(
         `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=7`,
       )
@@ -58,7 +58,7 @@ export class NomicsapiService {
   }
 
   async get1dHistory({ coinid }) {
-    return await this.httpService
+    return this.httpService
       .get(
         `https://pro-api.coingecko.com/api/v3/coins/${coinid}/market_chart?x_cg_pro_api_key=${this.CG_API_KEY}&vs_currency=usd&days=1`,
       )
@@ -73,9 +73,10 @@ export class NomicsapiService {
     };
     return formatted;
   }
+  
   @Cron(CronExpression.EVERY_10_MINUTES)
   async updateGlobal() {
-    return await this.httpService
+    return this.httpService
       .get(`https://pro-api.coingecko.com/api/v3/global?x_cg_pro_api_key=${this.CG_API_KEY}`)
       .pipe(
         map((response) => this.formatGlobal(response.data)),
@@ -88,7 +89,7 @@ export class NomicsapiService {
         {},
         body,
         { upsert: true, new: true },
-      );
+      ); 
   }  
 
   async readGlobal() {

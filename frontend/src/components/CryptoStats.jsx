@@ -12,8 +12,8 @@ const CryptoStats = () => {
   if (isFetching) return <Loader />;
 
   return (
-    <>
-      <Title level={2} className="heading">
+    <Col style={{paddingTop: "20px"}}>
+      <Title level={2} className="semibold-font">
         Markets
       </Title>
       <CryptoMCap />
@@ -37,7 +37,7 @@ const CryptoStats = () => {
           />
         </Col>
       </Row>
-    </>
+    </Col>
   );
 };
 

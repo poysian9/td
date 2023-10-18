@@ -9,12 +9,12 @@ const Cryptocurrencies = () => {
     <Col>
       <Col className="active-heading-container">
         <BreadCrumbs />
-        <Title level={1} className="active-heading">
+        <Title className="semibold-font" level={1}>
           C&B Cryptocurrencies by Market Cap
         </Title>
         <CryptoMCap />
       </Col>
-      <Explorers />
+      {/* <Explorers /> */}
       <CryptoTable />
     </Col>
   );

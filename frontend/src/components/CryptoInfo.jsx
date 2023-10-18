@@ -128,7 +128,15 @@ const CryptoInfo = ({cryptoDetails, assetData, messariData}) => {
                                 ? (
                                     <div
                                         dangerouslySetInnerHTML={{
-                                            __html: messariData.token_usage_details,
+                                            __html: assetData.assetdescription,
+                                    }}
+                                    />
+                                    ) 
+                                : assetData.tokendescription 
+                                ? (
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: assetData.tokendescription,
                                     }}
                                     />
                                     ) 

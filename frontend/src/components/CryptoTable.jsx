@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Input, Button, Table } from "antd";
+import { Col, Input, Button, Table, Row } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import prettyNum, { PRECISION_SETTING } from "pretty-num";
 import defaultImg from "../images/samih_sui.png";
@@ -52,7 +52,7 @@ const CryptoTable = () => {
     ...a2.find((item) => item.coingeckoid === itm.id && item),
     ...itm,
   }));
-
+  
   const datalist = assets ? mergeById(cryptos, assets) : "";
   if (loading) return <Loader />;
 
@@ -78,14 +78,16 @@ const CryptoTable = () => {
       dataIndex: "name",
       key: "Coin",
       render: (text, record, index) => (
-        <a href={`/cryptocurrencies/${record.id}`}>
+        <a href={`/cryptocurrencies/${record.id}`} style={{ color: "black"}}>
           <img
             src={record.logo_url ? record.logo_url : defaultImg}
             alt="icons"
             height={28}
             width={28}
+            style={{ marginRight: "8px" }}
           />{" "}
-          {text} ({record.symbol.toUpperCase()}){" "}
+        <span className="sohne-buch" style={{fontSize: "16px"}}>{text}</span>{" "}
+        <span className="sohne-leicht" style={{fontSize: "11px", paddingLeft: "3px", color: "gray"}}>{record.symbol.toUpperCase()}</span>{" "}
         </a>
       ),
       width: 500,
@@ -294,7 +296,7 @@ const CryptoTable = () => {
         // Replace underscores with spaces for rendering
         const displayedText = text === "null" ? "-" : text; // Render "-" for "null" value
     
-        const className = text.length > 15 ? 'small-font-ellipsis' : '';
+        const className = text && text.length > 15 ? 'small-font-ellipsis' : '';
 
         return <span className={className}>{displayedText}</span>;
     
@@ -458,7 +460,7 @@ const CryptoTable = () => {
         // Replace underscores with spaces for rendering
         const displayedText = text === "null" ? "-" : text; // Render "-" for "null" value
     
-        const className = text.length > 15 ? 'small-font-ellipsis' : '';
+        const className = text && text.length > 15 ? 'small-font-ellipsis' : '';
 
         return <span className={className}>{displayedText}</span>;
       }
@@ -514,27 +516,27 @@ const CryptoTable = () => {
 
   return datalist ? (
     <Col className="activeassets-container">
-      <div style={{ display: "flex", marginTop: "20px", marginBottom: "20px" }}>
-        <div className="search-crypto">
-          <Input
-            addonAfter={<SearchOutlined />}
-            placeholder="Search Cryptocurrency"
-            onChange={(e) => setSearchTerm(e.target.value)}
-            allowClear
-          />
-        </div>
-      </div>
-      <div className="boxfortable">
-        <div>
-          <Button
-            shape="round"
-            onClick={clearFilters}
-            style={{ display: "flex" }}
-          >
-            Clear Filters
-          </Button>
-        </div>
-      </div>
+      <Col style={{ marginTop: "20px", marginBottom: "20px" }}>
+        <Row className="boxfortable">
+          <Col className="search-crypto" span={8}>
+            <Input
+              addonAfter={<SearchOutlined />}
+              placeholder="Search Cryptocurrency"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              allowClear
+            />
+          </Col>
+          <Col span={2} offset={14}>
+            <Button
+              shape="round"
+              onClick={clearFilters}
+            >
+              Clear Filters
+            </Button>
+          </Col>
+        </Row>
+      </Col>
+
       <div className="rounded-tablez">
         <Table
           className="custom-table"

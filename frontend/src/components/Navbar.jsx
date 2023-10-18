@@ -1,53 +1,53 @@
 import React from "react";
-import { Menu, Typography, Avatar } from "antd";
+import { Menu, Row, Col, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined, MenuOutlined, DollarOutlined } from "@ant-design/icons";
-import icon from "../images/CNBsmall.png";
+import logo from "../images/CNBwordmarkwhite.png";
 
 const Navbar = () => {
   return (
     <>
-      <div className="nav-container">
-        <div>
-          <div className="logo-container">
-            <Avatar src={icon} shape="square" size="large" />
-            <Typography.Title level={2} className="logo" color="#fc4c4c">
-              <Link to="/" className="hlinkstyle">
-                Trader Database
-              </Link>
-            </Typography.Title>
-          </div>
-        </div>
+      <Row className="nav-container">
 
-        <div className="menu-content">
+          <Col className="logo-container" span={6}>
+            <a href="/">
+              <img src={logo} alt="logo" height={60} width={230}/>
+            </a>       
+            <a href="/" style={{ position: "relative", top: "-20px", overflow: "hidden" }}>
+              <Typography.Title level={5} style={{ color: "white", textAlign: "center", paddingLeft: "20px", width: "215px"}}>
+                Asset Database
+              </Typography.Title>
+            </a>    
+          </Col>
+
+        <Col className="menu-container" span={10} offset={8}>
           {
-            <Menu theme="dark" style={{ display: "flex", fontSize: "18px" }}>
+            <Menu theme="dark" style={{ display: "flex", fontSize: "16px", fontFamily: "Roobert Light" }}>
               <Menu.Item
-                icon={<HomeOutlined style={{ fontSize: "18px" }} />}
+                icon={<HomeOutlined style={{ fontSize: "16px" }} />}
                 key="home"
-              >
+                style={{paddingLeft: 30, paddingRight: 30 }}
+                >
                 <Link to="/">Home</Link>
               </Menu.Item>
               <Menu.Item
-                icon={<DollarOutlined style={{ fontSize: "18px" }} />}
+                icon={<DollarOutlined style={{ fontSize: "16px" }} />}
                 key="cryptocurriences"
-              >
+                style={{paddingLeft: 30, paddingRight: 30 }}
+                >
                 <Link to="/cryptocurrencies">Cryptocurrencies</Link>
               </Menu.Item>
-
               <Menu.Item
-                icon={<MenuOutlined style={{ fontSize: "18px" }} />}
+                icon={<MenuOutlined style={{ fontSize: "16px" }} />}
                 key="research"
-              >
+                style={{paddingLeft: 30, paddingRight: 30 }}
+                >
                 <Link to="/research">Research</Link>
               </Menu.Item>
-              {/* <Menu.Item icon={<EyeOutlined />}>
-                <Link to="/watchlist">Watch List</Link>
-              </Menu.Item> */}
             </Menu>
           }
-        </div>
-      </div>
+        </Col>
+      </Row>
     </>
   );
 };

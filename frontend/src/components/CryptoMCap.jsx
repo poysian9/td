@@ -24,7 +24,7 @@ const CryptoMCap = () => {
   
   return (
     <>
-      <Col className="cryptomarketcap">
+      <Col className="light-font-size16">
         <div>
           The global cryptocurrency market cap today is $
           {marketCap.total_market_cap ? millify(marketCap.total_market_cap,{

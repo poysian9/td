@@ -12,14 +12,13 @@ const { Title } = Typography;
 
 const Homepage = () => {
   return (
-    <>
+    <Col style={{ marginLeft: "30px", marginRight: "30px", marginTop: "20px" }}>
       <Col style={{ padding: "10px" }}>
         <Col className="explorers-value-heading">
-          <Title level={2}>Explorers</Title>
+          <Title className="semibold-font" level={2}>Explorers</Title>
         </Col>
 
         <Col className="explorers">
-          {" "}
           <Explorers />
         </Col>
       </Col>
@@ -38,7 +37,7 @@ const Homepage = () => {
       <Col style={{ padding: "10px" }}>
         <HomepageTabs />
       </Col>
-    </>
+    </Col>
   );
 };
 

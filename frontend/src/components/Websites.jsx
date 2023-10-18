@@ -78,12 +78,12 @@ const Websites = ({ coingeckolink, messarilink }) => {
           ""
         )}
         {coingeckolink ? (
-          <Button onClick={() => openInNewTab(coingeckolink)}>Coingecko</Button>
+          <Button shape="round" onClick={() => openInNewTab(coingeckolink)}>Coingecko</Button>
         ) : (
           ""
         )}
         {messarilink ? (
-          <Button onClick={() => openInNewTab(messarilink)}>Messari</Button>
+          <Button shape="round" onClick={() => openInNewTab(messarilink)}>Messari</Button>
         ) : (
           ""
         )}
