@@ -713,6 +713,7 @@ a:hover {
 
 .spread-column {
   width: auto;
+  
 }
 
 
@@ -722,6 +723,7 @@ a:hover {
   overflow-x: hidden;
   text-align: justify;
   text-justify: inter-word;
+  width: auto;
 }
 
 .rounded-table-container {
